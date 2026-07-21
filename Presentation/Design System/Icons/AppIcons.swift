@@ -22,4 +22,9 @@ enum AppIcons {
     static let checkmark = "checkmark"
     static let exclaim = "exclamationmark.triangle"
     static let xmark = "xmark"
+    static let help = "questionmark.circle"
+    static let signOut = "rectangle.portrait.and.arrow.right"
+    static let chevronRight = "chevron.right"
+    static let settings = "gearshape"
+    static let bolt = "bolt.fill"
 }
