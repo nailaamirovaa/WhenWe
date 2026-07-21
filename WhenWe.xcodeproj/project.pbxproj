@@ -34,9 +34,22 @@
 		10C436CC300E45BD00F83D63 /* Notes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		10C439E5300F82AA00F83D63 /* Exceptions for "WhenWe" folder in "WhenWe" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 101A0CF7300E380D00851112 /* WhenWe */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		101A0CFA300E380D00851112 /* WhenWe */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				10C439E5300F82AA00F83D63 /* Exceptions for "WhenWe" folder in "WhenWe" target */,
+			);
 			path = WhenWe;
 			sourceTree = "<group>";
 		};
@@ -70,6 +83,11 @@
 			path = Widgets;
 			sourceTree = "<group>";
 		};
+		10C439D4300F81F600F83D63 /* Resources */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +118,7 @@
 		101A0CEF300E380D00851112 = {
 			isa = PBXGroup;
 			children = (
+				10C439D4300F81F600F83D63 /* Resources */,
 				10C436CC300E45BD00F83D63 /* Notes.swift */,
 				101A0D3E300E3F2A00851112 /* Widgets */,
 				101A0D24300E3A9600851112 /* Domain */,
@@ -143,6 +162,7 @@
 				101A0D23300E3A7E00851112 /* Data */,
 				101A0D24300E3A9600851112 /* Domain */,
 				101A0D3E300E3F2A00851112 /* Widgets */,
+				10C439D4300F81F600F83D63 /* Resources */,
 			);
 			name = WhenWe;
 			packageProductDependencies = (
@@ -435,6 +455,7 @@
 				DEVELOPMENT_TEAM = LWM6UNR833;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WhenWe/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -467,6 +488,7 @@
 				DEVELOPMENT_TEAM = LWM6UNR833;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WhenWe/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

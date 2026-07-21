@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-private struct SecondaryButtonStyle: ButtonStyle {
+struct SecondaryButtonStyle: ButtonStyle {
 
     let isEnabled: Bool
 

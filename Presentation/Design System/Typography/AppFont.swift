@@ -16,4 +16,5 @@ enum AppFont {
     static let bodyStrong = Font.custom("Manrope-Bold", size: 16)
     static let caption = Font.custom("Manrope-Medium", size: 13)
     static let label = Font.custom("Manrope-Bold", size: 12)
+    static let subLabel = Font.custom("Manrope-Medium", size: 10)
 }
