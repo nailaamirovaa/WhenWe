@@ -11,35 +11,53 @@ struct GroupsView: View {
 
     let groups: [GroupSummary] = GroupSummary.samples
     var onCreateGroup: () -> Void = {}
+    @Binding var isTabBarHidden: Bool
+
+    @State private var selectedGroup: GroupSummary?
 
     var body: some View {
 
-        ZStack(alignment: .bottomTrailing) {
+        NavigationStack {
 
-            ScrollView {
+            ZStack(alignment: .bottomTrailing) {
 
-                VStack(alignment: .leading, spacing: Spacing.sm) {
+                ScrollView {
 
-                    Text("Groups")
-                        .font(AppFont.title1)
-                        .foregroundStyle(AppColors.Text.primary)
-                        .padding(.bottom, Spacing.xs)
+                    VStack(alignment: .leading, spacing: Spacing.sm) {
 
-                    ForEach(groups) { group in
-                        GroupCard(group: group)
+                        Text("Groups")
+                            .font(AppFont.title1)
+                            .foregroundStyle(AppColors.Text.primary)
+                            .padding(.bottom, Spacing.xs)
+
+                        ForEach(groups) { group in
+
+                            Button {
+                                selectedGroup = group
+                            } label: {
+                                GroupCard(group: group)
+                            }
+                            .buttonStyle(.plain)
+                        }
+
+                        startAnotherGroupCard
                     }
-
-                    startAnotherGroupCard
+                    .padding(Spacing.screenPadding)
+                    .padding(.bottom, Spacing.xxxl * 2)
                 }
-                .padding(Spacing.screenPadding)
-                .padding(.bottom, Spacing.xxxl * 2)
-            }
 
-            FloatingActionButton(action: onCreateGroup)
-                .padding(.trailing, Spacing.lg)
-                .padding(.bottom, Spacing.lg)
+                FloatingActionButton(action: onCreateGroup)
+                    .padding(.trailing, Spacing.lg)
+                    .padding(.bottom, Spacing.lg)
+            }
+            .background(AppColors.Background.subtle)
+            .navigationDestination(item: $selectedGroup) { group in
+                EventDetailView(group: group)
+            }
         }
-        .background(AppColors.Background.subtle)
+        .onChange(of: selectedGroup) { _, newValue in
+            isTabBarHidden = newValue != nil
+        }
     }
 
     private var startAnotherGroupCard: some View {
@@ -66,5 +84,3 @@ struct GroupsView: View {
         )
     }
 }
-
-

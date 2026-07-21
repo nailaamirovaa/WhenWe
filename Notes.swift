@@ -10,4 +10,8 @@
 Claudea de ki renglerin hamisini dark ve light mode ucun versin
  
  border focus reng
+ 
+ dark light mode
+ 
+ detail screende cox asagidi
  */

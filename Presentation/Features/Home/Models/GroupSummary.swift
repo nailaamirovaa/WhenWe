@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GroupSummary: Identifiable {
+struct GroupSummary: Identifiable, Hashable {
 
     let id = UUID()
     let emoji: String
@@ -17,11 +17,13 @@ struct GroupSummary: Identifiable {
     let nextEvent: NextEventSummary
 }
 
-struct NextEventSummary {
+struct NextEventSummary: Hashable {
 
+    let title: String
     let dayTime: String
     let going: Int
     let total: Int
+    let minimumRequired: Int
     let location: String
     let status: GroupEventStatus
 
@@ -39,9 +41,11 @@ extension GroupSummary {
             memberCount: 8,
             activityName: "football",
             nextEvent: NextEventSummary(
+                title: "Monday Football",
                 dayTime: "Mon 20:00",
                 going: 6,
                 total: 10,
+                minimumRequired: 6,
                 location: "Neftçi Arena",
                 status: .confirmed
             )
@@ -52,9 +56,11 @@ extension GroupSummary {
             memberCount: 6,
             activityName: "poker",
             nextEvent: NextEventSummary(
+                title: "Poker night",
                 dayTime: "Fri 21:00",
                 going: 4,
                 total: 6,
+                minimumRequired: 6,
                 location: "Elvin's place",
                 status: .needsMore(2)
             )
