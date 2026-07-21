@@ -9,28 +9,148 @@ import SwiftUI
 
 struct ProfileView: View {
 
+    @State private var isPremium = false
+
+    private let name = "Emin Aliyev"
+    private let initials = "EA"
+    private let maskedPhone = "+994 50 • • • 12"
+
     var body: some View {
 
-        VStack(spacing: Spacing.md) {
+        ScrollView {
 
-            Circle()
-                .fill(AppColors.Brand.soft)
-                .frame(width: 88, height: 88)
-                .overlay {
-                    Text("N")
-                        .font(AppFont.display)
-                        .foregroundStyle(AppColors.Brand.primary)
+            VStack(spacing: Spacing.md) {
+
+                Picker("Preview plan", selection: $isPremium) {
+                    Text("Free").tag(false)
+                    Text("Premium").tag(true)
                 }
-                .padding(.top, Spacing.xxxl)
+                .pickerStyle(.segmented)
 
-            Text("Naila Amirova")
+                titleRow
+
+                userCard
+
+                ProfilePlanCard(isPremium: isPremium, action: {})
+
+                HStack(spacing: Spacing.sm) {
+                    StatTile(value: "48", label: "games played")
+                    StatTile(value: "91%", label: "show-up rate")
+                }
+
+                settingsList
+
+                Button("Sign out") {}
+                    .font(AppFont.bodyStrong)
+                    .foregroundStyle(AppColors.Semantic.notGoing)
+                    .padding(.top, Spacing.xs)
+            }
+            .padding(Spacing.screenPadding)
+        }
+        .background(AppColors.Background.subtle)
+    }
+
+    private var titleRow: some View {
+
+        HStack {
+
+            Text("Profile")
                 .font(AppFont.title1)
                 .foregroundStyle(AppColors.Text.primary)
 
             Spacer()
+
+            Button(action: {}) {
+                Image(systemName: AppIcons.settings)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(AppColors.Text.primary)
+                    .frame(width: 36, height: 36)
+                    .background(AppColors.Background.card)
+                    .clipShape(Circle())
+            }
+            .buttonStyle(.plain)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(AppColors.Background.subtle)
+    }
+
+    private var userCard: some View {
+
+        HStack(spacing: Spacing.sm) {
+
+            ZStack(alignment: .bottomTrailing) {
+
+                Circle()
+                    .fill(AppColors.Brand.primary)
+                    .frame(width: 52, height: 52)
+                    .overlay {
+                        Text(initials)
+                            .font(AppFont.bodyStrong)
+                            .foregroundStyle(.white)
+                    }
+
+                if isPremium {
+                    Circle()
+                        .fill(AppColors.Accent.energy)
+                        .frame(width: 14, height: 14)
+                        .overlay {
+                            Circle().stroke(AppColors.Background.card, lineWidth: 2)
+                        }
+                }
+            }
+
+            VStack(alignment: .leading, spacing: 2) {
+
+                HStack(spacing: Spacing.xs) {
+
+                    Text(name)
+                        .font(AppFont.bodyStrong)
+                        .foregroundStyle(AppColors.Text.primary)
+
+                    if isPremium {
+                        Text("PRO")
+                            .font(.system(size: 10, weight: .heavy))
+                            .foregroundStyle(Color(red: 0x17 / 255, green: 0x15 / 255, blue: 0x1F / 255))
+                            .padding(.horizontal, Spacing.xs)
+                            .frame(height: 16)
+                            .background(AppColors.Accent.energy)
+                            .clipShape(Capsule())
+                    }
+                }
+
+                Text(maskedPhone)
+                    .font(AppFont.caption)
+                    .foregroundStyle(AppColors.Text.secondary)
+            }
+
+            Spacer()
+
+            Button(action: {}) {
+                Text("Edit")
+                    .font(AppFont.caption.bold())
+                    .foregroundStyle(AppColors.Brand.primary)
+                    .padding(.horizontal, Spacing.sm)
+                    .frame(height: 30)
+                    .background(AppColors.Brand.soft)
+                    .clipShape(Capsule())
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(Spacing.md)
+        .background(AppColors.Background.card)
+        .clipShape(RoundedRectangle(cornerRadius: Radius.large))
+    }
+
+    private var settingsList: some View {
+
+        VStack(spacing: 0) {
+
+            SettingsRow(icon: AppIcons.reminder, title: "Notifications", action: {})
+            Divider()
+            SettingsRow(icon: AppIcons.calendar, title: "My availability", action: {})
+            Divider()
+            SettingsRow(icon: AppIcons.help, title: "Help & feedback", action: {})
+        }
+        .background(AppColors.Background.card)
+        .clipShape(RoundedRectangle(cornerRadius: Radius.large))
     }
 }
 
