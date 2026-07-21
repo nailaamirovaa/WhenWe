@@ -27,7 +27,7 @@ struct PrimaryButton: View {
 
                 Text(title)
                     .font(AppFont.bodyStrong)
-                    .foregroundStyle(textColor )
+                    .foregroundStyle(.white )
             }
             .frame(maxWidth: .infinity)
             .frame(height: 56)
