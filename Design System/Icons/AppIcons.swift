@@ -29,5 +29,4 @@ enum AppIcons {
     static let bolt = "bolt.fill"
     static let light_mode = "lightbulb.max.fill"
     static let dark_mode = "lightbulb.max"
-    static let stats = "chart.bar.fill"
 }
