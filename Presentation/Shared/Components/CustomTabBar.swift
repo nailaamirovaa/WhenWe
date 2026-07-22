@@ -17,7 +17,7 @@ struct CustomTabBar: View {
             
             Rectangle()
                 .frame(maxWidth: .infinity)
-                .foregroundStyle(.white)
+                .foregroundStyle(.backgroundBase)
             
             HStack(spacing: 70) {
                 
@@ -28,7 +28,7 @@ struct CustomTabBar: View {
             .padding(.bottom, 0)
             .padding()
         }
-        .background(.white)
+        .background(.backgroundBase)
         .frame(maxWidth: .infinity)
         .frame(height: 50)
     }

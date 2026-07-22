@@ -42,12 +42,13 @@ struct AppTextField: View {
                         .allowsHitTesting(false)
                 }
             }
+            .tint(.brandPrimary)
     }
 
     private var borderColor: Color {
 
         isFocused
-        ? AppColors.Text.primary
+        ? AppColors.Brand.primary
         : AppColors.Border.default
     }
 }

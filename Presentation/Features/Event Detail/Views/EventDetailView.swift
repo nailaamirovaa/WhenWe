@@ -81,6 +81,8 @@ struct EventDetailView: View {
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
+        .padding(.top, Spacing.xxl)
+        .ignoresSafeArea()
         .background(AppColors.Background.subtle)
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)

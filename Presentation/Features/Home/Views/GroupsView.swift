@@ -10,10 +10,10 @@ import SwiftUI
 struct GroupsView: View {
 
     let groups: [GroupSummary] = GroupSummary.samples
-    var onCreateGroup: () -> Void = {}
     @Binding var isTabBarHidden: Bool
 
     @State private var selectedGroup: GroupSummary?
+    @State private var isPresentingCreateEvent = false
 
     var body: some View {
 
@@ -46,13 +46,16 @@ struct GroupsView: View {
                     .padding(.bottom, Spacing.xxxl * 2)
                 }
 
-                FloatingActionButton(action: onCreateGroup)
+                FloatingActionButton(action: { isPresentingCreateEvent = true })
                     .padding(.trailing, Spacing.lg)
                     .padding(.bottom, Spacing.lg)
             }
             .background(AppColors.Background.subtle)
             .navigationDestination(item: $selectedGroup) { group in
                 EventDetailView(group: group)
+            }
+            .sheet(isPresented: $isPresentingCreateEvent) {
+                CreateEventSheetView()
             }
         }
         .onChange(of: selectedGroup) { _, newValue in

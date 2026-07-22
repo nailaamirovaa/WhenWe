@@ -27,4 +27,6 @@ enum AppIcons {
     static let chevronRight = "chevron.right"
     static let settings = "gearshape"
     static let bolt = "bolt.fill"
+    static let light_mode = "lightbulb.max.fill"
+    static let dark_mode = "lightbulb.max"
 }

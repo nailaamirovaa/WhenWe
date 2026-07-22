@@ -13,7 +13,7 @@ struct HomeTabView: View {
     @State private var isTabBarHidden = false
 
     var body: some View {
-        ZStack(alignment: .bottom) {
+        VStack{
 
             content
                 .ignoresSafeArea(edges: .bottom)
