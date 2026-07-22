@@ -13,6 +13,8 @@ struct CreateEventOptionsStepView: View {
     let onBack: () -> Void
     let onCreate: () -> Void
 
+    @State private var isShowingRecurringSetup = false
+
     var body: some View {
 
         VStack(alignment: .leading, spacing: 0) {
@@ -98,9 +100,71 @@ struct CreateEventOptionsStepView: View {
                 isOn: $viewModel.autoRemindersEnabled
             )
 
+            recurringCard
+                .padding(.top, Spacing.xs)
+
             PrimaryButton(title: "Create event", action: onCreate)
                 .padding(.top, Spacing.md)
         }
+        .sheet(isPresented: $isShowingRecurringSetup) {
+            RecurringSetupView()
+        }
+    }
+
+    private var recurringCard: some View {
+
+        Button(action: { isShowingRecurringSetup = true }) {
+
+            HStack(spacing: Spacing.md) {
+
+                Text(AppIcons.recurring)
+                    .font(.system(size: 22))
+                    .frame(width: 44, height: 44)
+                    .background(AppColors.Brand.primary)
+                    .clipShape(RoundedRectangle(cornerRadius: Radius.medium))
+
+                VStack(alignment: .leading, spacing: 2) {
+
+                    HStack(spacing: Spacing.xs) {
+                        Text("Make this repeat weekly")
+                            .font(.system(size: 15, weight: .heavy))
+                            .foregroundStyle(AppColors.Text.primary)
+
+                        Text("PRO")
+                            .font(.system(size: 10, weight: .heavy))
+                            .foregroundStyle(AppColors.Brand.primary)
+                            .padding(.horizontal, Spacing.xs)
+                            .frame(height: 20)
+                            .background(AppColors.Background.card)
+                            .clipShape(Capsule())
+                    }
+
+                    Text("Auto-ask the group every week — set & forget")
+                        .font(AppFont.caption)
+                        .foregroundStyle(AppColors.Text.secondary)
+                }
+
+                Spacer()
+
+                Image(systemName: AppIcons.chevronRight)
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundStyle(AppColors.Brand.primary)
+            }
+            .padding(Spacing.md)
+            .background(
+                LinearGradient(
+                    colors: [AppColors.Brand.soft, Color(red: 0xE4 / 255, green: 0xDC / 255, blue: 0xFF / 255)],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: Radius.large)
+                    .stroke(Color(red: 0xDC / 255, green: 0xD4 / 255, blue: 0xFB / 255), lineWidth: 1.5)
+            )
+            .clipShape(RoundedRectangle(cornerRadius: Radius.large))
+        }
+        .buttonStyle(.plain)
     }
 
     private func optionRow<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
@@ -172,9 +236,4 @@ struct CreateEventOptionsStepView: View {
         }
         .buttonStyle(.plain)
     }
-}
-
-#Preview {
-    CreateEventOptionsStepView(viewModel: CreateEventViewModel(), onBack: {}, onCreate: {})
-        .padding()
 }

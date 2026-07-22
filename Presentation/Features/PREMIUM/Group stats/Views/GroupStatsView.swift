@@ -118,8 +118,3 @@ struct GroupStatsView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        GroupStatsView(group: GroupSummary.samples[0])
-    }
-}

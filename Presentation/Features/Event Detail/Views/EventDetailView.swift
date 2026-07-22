@@ -18,6 +18,9 @@ struct EventDetailView: View {
     @State private var maybeCount = 2
     @State private var cantCount = 1
     @State private var isShowingStats = false
+    @State private var isShowingPayments = false
+
+    private let payments = EventPayments.sample
 
     init(group: GroupSummary) {
         self.group = group
@@ -55,6 +58,8 @@ struct EventDetailView: View {
 
                     goingSummaryCard
 
+                    paymentsCard
+
                     Text("ARE YOU IN?")
                         .font(AppFont.label)
                         .foregroundStyle(AppColors.Text.tertiary)
@@ -66,6 +71,8 @@ struct EventDetailView: View {
                 }
                 .padding(Spacing.screenPadding)
                 .padding(.bottom, Spacing.xxxl)
+                
+                Spacer(minLength: 50)
             }
 
             if isConfirmed {
@@ -90,6 +97,9 @@ struct EventDetailView: View {
         .animation(.easeOut(duration: 0.25), value: isConfirmed)
         .navigationDestination(isPresented: $isShowingStats) {
             GroupStatsView(group: group)
+        }
+        .navigationDestination(isPresented: $isShowingPayments) {
+            PaymentsView()
         }
     }
 
@@ -116,8 +126,8 @@ struct EventDetailView: View {
 
                     Button(action: { isShowingStats = true }) {
                         HStack(spacing: 4) {
-                            Image(systemName: AppIcons.stats)
-                                .font(.system(size: 11, weight: .bold))
+                            Text("📊")
+                                .font(.system(size: 12))
                             Text("Stats")
                                 .font(AppFont.caption.bold())
                         }
@@ -199,6 +209,71 @@ struct EventDetailView: View {
             }
 
             Spacer()
+        }
+        .padding(Spacing.md)
+        .background(AppColors.Background.card)
+        .clipShape(RoundedRectangle(cornerRadius: Radius.large))
+    }
+
+    private var paymentsCard: some View {
+
+        VStack(alignment: .leading, spacing: Spacing.sm) {
+
+            HStack(spacing: Spacing.md) {
+
+                Text("💰")
+                    .font(.system(size: 22))
+                    .frame(width: 44, height: 44)
+                    .background(AppColors.Semantic.going.opacity(0.15))
+                    .clipShape(RoundedRectangle(cornerRadius: Radius.medium))
+
+                VStack(alignment: .leading, spacing: 2) {
+
+                    Text("\(payments.currencySymbol)\(payments.amountPerPlayer) per player · pitch fee")
+                        .font(.system(size: 16, weight: .heavy))
+                        .foregroundStyle(AppColors.Text.primary)
+
+                    Text("\(payments.paidCount) of \(payments.totalCount) paid · \(payments.currencySymbol)\(payments.collected) collected")
+                        .font(AppFont.caption.bold())
+                        .foregroundStyle(AppColors.Semantic.going)
+                }
+
+                Spacer()
+            }
+
+            GeometryReader { proxy in
+                Capsule()
+                    .fill(AppColors.Background.subtle)
+                    .overlay(alignment: .leading) {
+                        Capsule()
+                            .fill(AppColors.Semantic.going)
+                            .frame(width: proxy.size.width * payments.progress)
+                    }
+            }
+            .frame(height: 8)
+
+            Button(action: { isShowingPayments = true }) {
+                HStack(spacing: Spacing.xs) {
+                    Image(systemName: "creditcard")
+                        .font(.system(size: 13, weight: .semibold))
+
+                    Text("See who paid")
+                        .font(.system(size: 14, weight: .heavy))
+
+                    Text("PRO")
+                        .font(.system(size: 10, weight: .heavy))
+                        .padding(.horizontal, 6)
+                        .frame(height: 20)
+                        .background(AppColors.Brand.soft)
+                        .clipShape(Capsule())
+                }
+                .foregroundStyle(AppColors.Brand.primary)
+                .frame(maxWidth: .infinity)
+                .frame(height: 44)
+                .background(AppColors.Background.subtle)
+                .clipShape(RoundedRectangle(cornerRadius: Radius.medium))
+            }
+            .buttonStyle(.plain)
         }
         .padding(Spacing.md)
         .background(AppColors.Background.card)

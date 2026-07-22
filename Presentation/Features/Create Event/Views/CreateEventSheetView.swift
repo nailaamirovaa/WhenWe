@@ -29,7 +29,7 @@ struct CreateEventSheetView: View {
         .padding(.horizontal, Spacing.screenPadding)
         .padding(.top, Spacing.sm)
         .padding(.bottom, Spacing.sm)
-        .presentationDetents([.height(step == 1 ? 700 : 520)])
+        .presentationDetents([.height(step == 1 ? 700 : 620)])
         .presentationDragIndicator(.visible)
         .presentationCornerRadius(Radius.extraLarge)
         .presentationBackground(.white)
