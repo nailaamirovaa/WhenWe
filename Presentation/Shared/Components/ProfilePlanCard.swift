@@ -12,7 +12,6 @@ struct ProfilePlanCard: View {
     let isPremium: Bool
     let action: () -> Void
 
-    private let inkColor = Color(red: 0x17 / 255, green: 0x15 / 255, blue: 0x1F / 255)
 
     var body: some View {
 
@@ -32,7 +31,7 @@ struct ProfilePlanCard: View {
 
             Image(systemName: AppIcons.bolt)
                 .font(.system(size: 14, weight: .bold))
-                .foregroundStyle(inkColor)
+                .foregroundStyle(.black)
                 .frame(width: 32, height: 32)
                 .background(AppColors.Accent.energy)
                 .clipShape(Circle())
@@ -68,7 +67,7 @@ struct ProfilePlanCard: View {
             }
         }
         .padding(Spacing.md)
-        .background(inkColor)
+        .background(.black)
         .clipShape(RoundedRectangle(cornerRadius: Radius.large))
     }
 }

@@ -29,7 +29,6 @@ struct CreateEventWhenStepView: View {
                     Text("1/2")
                         .font(AppFont.caption.bold())
                         .foregroundStyle(AppColors.Text.tertiary)
-                        .monospacedDigit()
                 }
                 
                 activityPicker

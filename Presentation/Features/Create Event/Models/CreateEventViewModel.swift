@@ -22,7 +22,7 @@ final class CreateEventViewModel {
 
     var minPlayers = 8
     var costPerPerson = "5"
-    var waitlistEnabled = true
+    var waitlistEnabled = false
     var autoRemindersEnabled = false
 
     private let dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]

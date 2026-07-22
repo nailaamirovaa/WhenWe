@@ -41,4 +41,8 @@ enum AppColors {
         static let `default` = Color("BorderDefault")
 
     }
+    
+    enum Custom {
+        static let calendarCell = Color("calendarCell")
+    }
 }
