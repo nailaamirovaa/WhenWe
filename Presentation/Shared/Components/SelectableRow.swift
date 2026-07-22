@@ -59,12 +59,3 @@ struct SelectableRow: View {
         .buttonStyle(.plain)
     }
 }
-
-#Preview {
-    VStack(spacing: Spacing.sm) {
-        SelectableRow(title: "Next Monday · 20:00", subtitle: "Jul 27", isSelected: true) {}
-        SelectableRow(title: "Next Friday · 21:00") {}
-        SelectableRow(title: "Pick another time") {}
-    }
-    .padding()
-}

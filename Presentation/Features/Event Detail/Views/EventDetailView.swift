@@ -17,6 +17,7 @@ struct EventDetailView: View {
     @State private var goingCount: Int
     @State private var maybeCount = 2
     @State private var cantCount = 1
+    @State private var isShowingStats = false
 
     init(group: GroupSummary) {
         self.group = group
@@ -87,6 +88,9 @@ struct EventDetailView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .animation(.easeOut(duration: 0.25), value: isConfirmed)
+        .navigationDestination(isPresented: $isShowingStats) {
+            GroupStatsView(group: group)
+        }
     }
 
     private var header: some View {
@@ -108,14 +112,33 @@ struct EventDetailView: View {
 
                 Spacer()
 
-                Text("Share link")
-                    .font(AppFont.caption.bold())
-                    .foregroundStyle(AppColors.Brand.primary)
-                    .padding(.horizontal, Spacing.md)
-                    .frame(height: 40)
-                    .background(AppColors.Background.card)
-                    .clipShape(Capsule())
-                    .shadow(color: .black.opacity(0.06), radius: 16, y: 6)
+                HStack(spacing: Spacing.xs) {
+
+                    Button(action: { isShowingStats = true }) {
+                        HStack(spacing: 4) {
+                            Image(systemName: AppIcons.stats)
+                                .font(.system(size: 11, weight: .bold))
+                            Text("Stats")
+                                .font(AppFont.caption.bold())
+                        }
+                        .foregroundStyle(AppColors.Brand.primary)
+                        .padding(.horizontal, Spacing.md)
+                        .frame(height: 40)
+                        .background(AppColors.Background.card)
+                        .clipShape(Capsule())
+                        .shadow(color: .black.opacity(0.06), radius: 16, y: 6)
+                    }
+                    .buttonStyle(.plain)
+
+                    Text("Share link")
+                        .font(AppFont.caption.bold())
+                        .foregroundStyle(AppColors.Brand.primary)
+                        .padding(.horizontal, Spacing.md)
+                        .frame(height: 40)
+                        .background(AppColors.Background.card)
+                        .clipShape(Capsule())
+                        .shadow(color: .black.opacity(0.06), radius: 16, y: 6)
+                }
             }
 
             HStack(spacing: Spacing.sm) {

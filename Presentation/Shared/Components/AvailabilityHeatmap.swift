@@ -24,7 +24,7 @@ struct AvailabilityCalendarGrid: View {
             HStack(spacing: spacing) {
                 ForEach(days.indices, id: \.self) { index in
                     Text(days[index])
-                        .font(.system(size: 10, weight: .heavy))
+                        .font(AppFont.subLabel)
                         .foregroundStyle(AppColors.Text.tertiary)
                         .frame(maxWidth: .infinity)
                 }
@@ -74,7 +74,7 @@ struct AvailabilityCalendarGrid: View {
         switch level(day: day, hour: hour) {
         case 0: return AppColors.Background.subtle
         case 1: return AppColors.Brand.soft
-        default: return Color(red: 0xDC / 255, green: 0xD4 / 255, blue: 0xFB / 255)
+        default: return AppColors.Custom.calendarCell
         }
     }
 
@@ -87,7 +87,3 @@ struct AvailabilityCalendarGrid: View {
     }
 }
 
-#Preview {
-    AvailabilityCalendarGrid(selectedDay: .constant(0), selectedHour: .constant(20))
-        .padding()
-}
