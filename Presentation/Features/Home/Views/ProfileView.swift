@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ProfileView: View {
-
+    
+    @EnvironmentObject private var themeManager: ThemeManager
     @State private var isPremium = false
 
     private let name = "Emin Aliyev"
@@ -60,8 +61,10 @@ struct ProfileView: View {
 
             Spacer()
 
-            Button(action: {}) {
-                Image(systemName: AppIcons.settings)
+            Button(action: {
+                themeManager.toggleTheme()
+            }) {
+                Image(systemName: themeManager.colorScheme == .light ? AppIcons.light_mode : AppIcons.dark_mode)
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundStyle(AppColors.Text.primary)
                     .frame(width: 36, height: 36)
@@ -154,6 +157,4 @@ struct ProfileView: View {
     }
 }
 
-#Preview {
-    ProfileView()
-}
+

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum GroupEventStatus {
+enum GroupEventStatus: Hashable {
     case confirmed
     case needsMore(Int)
     case waitlist

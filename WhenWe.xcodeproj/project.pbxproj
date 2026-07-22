@@ -88,6 +88,11 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		10C43A9F300FA07C00F83D63 /* Design System */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Design System";
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +133,7 @@
 				101A0D08300E380E00851112 /* WhenWeTests */,
 				101A0D12300E380E00851112 /* WhenWeUITests */,
 				101A0CF9300E380D00851112 /* Products */,
+				10C43A9F300FA07C00F83D63 /* Design System */,
 			);
 			sourceTree = "<group>";
 		};
@@ -163,6 +169,7 @@
 				101A0D24300E3A9600851112 /* Domain */,
 				101A0D3E300E3F2A00851112 /* Widgets */,
 				10C439D4300F81F600F83D63 /* Resources */,
+				10C43A9F300FA07C00F83D63 /* Design System */,
 			);
 			name = WhenWe;
 			packageProductDependencies = (
