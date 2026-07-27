@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "progress_ring_icon.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -18,13 +18,13 @@ struct PrimaryButton: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: Spacing.sm) {
+            HStack(alignment: .center,spacing: Spacing.sm) {
 
                 if isLoading {
                     ProgressView()
                         .tint(textColor)
                 }
-
+                
                 Text(title)
                     .font(AppFont.bodyStrong)
                     .foregroundStyle(.white )
