@@ -20,7 +20,9 @@ struct ContentView: View {
             OnboardingFlowView(onComplete: { hasCompletedOnboarding = true })
         }
          */
-        HomeTabView()
+        //HomeTabView()
+        
+        LoginView()
     }
 }
 
