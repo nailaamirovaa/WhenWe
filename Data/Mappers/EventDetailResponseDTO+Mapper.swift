@@ -1,11 +1,11 @@
 //
-//  EventResponseDTO+Mapper.swift
+//  EventDetailResponseDTO+Mapper.swift
 //  WhenWe
 //
 //  Created by Naila Amirova on 28.07.26.
 //
 
-extension EventResponseDTO {
+extension EventDetailResponseDTO {
 
     func toEntity() throws -> Event {
 
@@ -81,7 +81,7 @@ extension EventResponseDTO {
                      completedAt: completedAt,
                      cancelledAt: cancelledAt,
                      deletedAt: deletedAt,
-                     counts: nil,
-                     rsvps: nil)
+                     counts: try counts?.toEntity(),
+                     rsvps: try rsvps?.map { try $0.toEntity() })
     }
 }
