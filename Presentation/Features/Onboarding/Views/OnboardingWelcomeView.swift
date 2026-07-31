@@ -167,7 +167,3 @@ struct OnboardingWelcomeView: View {
             .shadow(color: .black.opacity(0.14), radius: 12, y: 6)
     }
 }
-
-#Preview {
-    OnboardingWelcomeView(onCreateGroup: {}, onHaveInviteLink: {})
-}

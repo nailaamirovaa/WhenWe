@@ -60,12 +60,3 @@ private extension SelectionCard {
         }
     }
 }
-
-#Preview {
-    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.sm), count: 3), spacing: Spacing.sm) {
-        SelectionCard(emoji: "⚽", title: "Football", isSelected: true) {}
-        SelectionCard(emoji: "🃏", title: "Poker") {}
-        SelectionCard(emoji: "+", title: "Other", isDashed: true) {}
-    }
-    .padding()
-}

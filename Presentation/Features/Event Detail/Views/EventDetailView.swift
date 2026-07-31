@@ -65,7 +65,7 @@ struct EventDetailView: View {
                         .foregroundStyle(AppColors.Text.tertiary)
                         .padding(.top, Spacing.sm)
 
-                    RSVPChipGroup(selection: myRSVP, onSelect: selectRSVP)
+                    RSVPChipGroup(onSelect: selectRSVP, selection: myRSVP ?? .going)
 
                     attendeeList
                 }

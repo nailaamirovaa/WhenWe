@@ -32,4 +32,5 @@ enum AppIcons {
     static let apple = "AppleIcon"
     static let google = "GoogleIcon"
     static let progress_ring = "ProgressRing"
+    static let appIcon = "AppIcon"
 }

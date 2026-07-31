@@ -9,46 +9,36 @@
 import SwiftUI
 
 struct AppTextField: View {
-
+    
     let placeholder: String
     @Binding var text: String
-
-    @FocusState private var isFocused: Bool
-
+    @FocusState private var isFocused: Bool 
+    
     var body: some View {
-
         TextField("", text: $text)
+            .font(AppFont.caption)
+            .padding(.horizontal, Spacing.sm)
+            .padding(.vertical, Spacing.sm)
             .focused($isFocused)
-            .font(AppFont.body)
             .foregroundStyle(AppColors.Text.primary)
-            .padding(.horizontal, Spacing.md)
-            .frame(height: 56)
-            .background(AppColors.Background.card)
-            .overlay {
-                RoundedRectangle(cornerRadius: Radius.large)
-                    .stroke(borderColor, lineWidth: 1)
-            }
+            .background(isFocused ? .white : .gray.opacity(0.1))
             .clipShape(
-                RoundedRectangle(cornerRadius: Radius.large)
+                RoundedRectangle(cornerRadius: Radius.small)
             )
+            .overlay {
+                RoundedRectangle(cornerRadius: Radius.small)
+                    .stroke(isFocused ? AppColors.Brand.primary : .clear, lineWidth: 1.5)
+                
+            }
             .overlay(alignment: .leading) {
-
                 if text.isEmpty {
-
                     Text(placeholder)
-                        .font(AppFont.body)
+                        .font(AppFont.caption)
                         .foregroundStyle(AppColors.Text.tertiary)
                         .padding(.horizontal, Spacing.md)
                         .allowsHitTesting(false)
                 }
             }
-            .tint(.brandPrimary)
-    }
-
-    private var borderColor: Color {
-
-        isFocused
-        ? AppColors.Brand.primary
-        : AppColors.Border.default
+            .tint(AppColors.Brand.primary)
     }
 }
