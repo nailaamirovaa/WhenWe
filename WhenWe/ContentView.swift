@@ -13,16 +13,16 @@ struct ContentView: View {
 
     var body: some View {
 
-        /*
+        
         if hasCompletedOnboarding {
             HomeTabView()
         } else {
             OnboardingFlowView(onComplete: { hasCompletedOnboarding = true })
         }
-         */
+         
         //HomeTabView()
         
-        LoginView()
+        //LoginView()
     }
 }
 

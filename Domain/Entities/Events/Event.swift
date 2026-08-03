@@ -14,7 +14,7 @@ struct Event: Identifiable {
     let activityType: String
     let startsAt: String
     let timeZone: String
-    let durationMin: Int
+    let durationMin: Int?
     let waitlistEnabled: Bool
     let status: String
     let createdBy: String

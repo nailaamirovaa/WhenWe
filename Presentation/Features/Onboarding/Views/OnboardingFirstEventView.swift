@@ -77,7 +77,6 @@ struct OnboardingFirstEventView: View {
 
             PrimaryButton(
                 title: "Create event",
-                isEnabled: viewModel.canContinueFromFirstEvent,
                 action: onContinue
             )
         }

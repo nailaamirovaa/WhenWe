@@ -8,24 +8,21 @@
 import SwiftUI
 
 struct RSVPChipGroup: View {
-
-    let selection: RSVPChoice?
+    
     let onSelect: (RSVPChoice) -> Void
-
+    let selection: RSVPChoice
+    
     var body: some View {
-
         HStack(spacing: Spacing.sm) {
-
             ForEach(RSVPChoice.allCases, id: \.self) { choice in
                 chip(for: choice)
             }
         }
     }
-
+    
     private func chip(for choice: RSVPChoice) -> some View {
-
         let isSelected = selection == choice
-
+        
         return Button {
             onSelect(choice)
         } label: {
@@ -35,19 +32,13 @@ struct RSVPChipGroup: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: 48)
                 .background(isSelected ? choice.color : AppColors.Background.card)
-                .overlay(
+                .overlay {
                     Capsule()
                         .stroke(isSelected ? Color.clear : AppColors.Border.default, lineWidth: 1.5)
-                )
+                }
                 .clipShape(Capsule())
-                .scaleEffect(isSelected ? 1.04 : 1)
         }
         .buttonStyle(.plain)
         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isSelected)
     }
-}
-
-#Preview {
-    RSVPChipGroup(selection: .going, onSelect: { _ in })
-        .padding()
 }

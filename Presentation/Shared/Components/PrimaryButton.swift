@@ -8,54 +8,32 @@
 import SwiftUI
 
 struct PrimaryButton: View {
-
-    let title: String
-    var isLoading: Bool = false
-    var isEnabled: Bool = true
+    
+    var title: String
+    var state: PrimaryButtonState = .normal
+    
     let action: () -> Void
-
-    @GestureState private var isPressed = false
-
+    
     var body: some View {
         Button(action: action) {
-            HStack(alignment: .center,spacing: Spacing.sm) {
-
-                if isLoading {
+            HStack(alignment: .center, spacing: Spacing.sm) {
+                if state.showLoadingIndicator {
                     ProgressView()
-                        .tint(textColor)
+                        .tint(.textPrimary)
                 }
                 
                 Text(title)
                     .font(AppFont.bodyStrong)
-                    .foregroundStyle(.white )
+                    .foregroundStyle(state.textColor)
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 56)
-            .background(backgroundColor)
+            .frame(height: 54)
+            .background(state.backgroundColor)
             .clipShape(
-                RoundedRectangle(cornerRadius: Radius.large)
+                RoundedRectangle(cornerRadius: Radius.medium)
             )
         }
-        .disabled(!isEnabled || isLoading)
-        .buttonStyle(
-            PrimaryButtonStyle(
-                isEnabled: isEnabled,
-                isLoading: isLoading
-            )
-        )
-    }
-
-    private var backgroundColor: Color {
-        if !isEnabled {
-            return AppColors.Brand.soft
-        }
-
-        return AppColors.Brand.primary
-    }
-    
-    private var textColor: Color {
-        isEnabled
-            ? AppColors.Text.primary
-            : AppColors.Text.primary.opacity(0.65)
+        .buttonStyle(ShrinkButtonStyle())
+        .disabled(!state.userInteractionEnabled)
     }
 }

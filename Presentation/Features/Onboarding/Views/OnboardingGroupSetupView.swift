@@ -75,7 +75,6 @@ struct OnboardingGroupSetupView: View {
 
             PrimaryButton(
                 title: "Continue",
-                isEnabled: viewModel.canContinueFromGroupSetup,
                 action: onContinue
             )
         }
