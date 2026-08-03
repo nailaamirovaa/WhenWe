@@ -1,15 +1,17 @@
 //
-//  ErrorResponseDTO.swift
+//  APIResponse.swift
 //  WhenWe
 //
-//  Created by Naila Amirova on 27.07.26.
+//  Created by Naila Amirova on 03.08.26.
 //
 
-import Foundation
+struct APIResponse<T: Decodable>: Decodable {
+    let data: T?
+}
 
-struct ErrorResponseDTO: Decodable {
+struct APIError: Decodable {
 
-    var error: ErrorBodyResponseDTO?
+    var error: APIErrorBody?
     var requestId: String?
 
     enum CodingKeys: String, CodingKey {
@@ -18,7 +20,7 @@ struct ErrorResponseDTO: Decodable {
     }
 }
 
-struct ErrorBodyResponseDTO: Decodable {
+struct APIErrorBody: Decodable {
 
     var code: String?
     var message: String?
