@@ -9,5 +9,5 @@ protocol AuthRepository {
     func signInWithApple(idToken: String, fullName: String?) async throws -> AuthResult
     func signInWithGoogle(idToken: String, fullName: String?) async throws -> AuthResult
     func logout() async throws
-    func refreshSession() async throws
+    func refreshSession(refreshToken: String) async throws -> AuthTokens
 }
