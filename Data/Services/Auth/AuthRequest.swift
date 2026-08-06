@@ -17,20 +17,20 @@ enum AuthRequest: APIRequest {
     var path: String {
         switch self {
         case .appleSignIn:
-            "/auth/apple"
+            return "/auth/apple"
         case .googleSignIn:
-            "/auth/google"
+            return "/auth/google"
         case .refreshToken:
-            "/auth/refresh"
+            return "/auth/refresh"
         case .logout:
-            "/auth/logout"
+            return "/auth/logout"
         }
     }
     
     var method: HTTPMethod {
         switch self {
         case .appleSignIn, .googleSignIn, .refreshToken, .logout:
-                .post
+            return .post
         }
     }
     

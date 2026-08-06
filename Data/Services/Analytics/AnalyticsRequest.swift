@@ -24,7 +24,7 @@ enum AnalyticsRequest: APIRequest {
     var method: HTTPMethod {
         switch self {
         case .analyticsBatch, .analyticsEvent:
-                .post
+                return .post
         }
     }
     

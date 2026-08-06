@@ -6,7 +6,6 @@
 //
 
 final class EventsService {
-    static let shared = EventsService()
     
     //MARK: - Create Event
     func createEvent(groupId: String, request: CreateEventRequestDTO) async throws -> EventResponseDTO {
@@ -15,13 +14,13 @@ final class EventsService {
     }
     
     //MARK: - List Upcoming Events
-    func listUpcomingEvents(cursor: String?, limit: Int) async throws -> [EventResponseDTO] {
+    func listUpcomingEvents(cursor: String?, limit: Int) async throws -> EventListResponseDTO {
         return try await NetworkManager.shared.request(apiRequest: EventsRequest.listUpcomingEvents(cursor: cursor, limit: limit),
-                                                       responseType: [EventResponseDTO].self)
+                                                       responseType: EventListResponseDTO.self)
     }
     
     //MARK: - Get Event
-    func createEvent(eventId: String) async throws -> EventResponseDTO {
+    func getEvent(eventId: String) async throws -> EventResponseDTO {
         return try await NetworkManager.shared.request(apiRequest: EventsRequest.getEvent(eventId: eventId),
                                                        responseType: EventResponseDTO.self)
     }

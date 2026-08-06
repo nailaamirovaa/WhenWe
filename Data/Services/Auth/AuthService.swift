@@ -7,9 +7,6 @@
 
 public final class AuthService {
     
-    static let shared = AuthService()
-    
-    
     // MARK: - Apple Sign In
     func appleSignIn(request: AppleSignInRequestDTO) async throws -> AppleSignInResponseDTO {
         try await NetworkManager.shared.request(apiRequest: AuthRequest.appleSignIn(request),
