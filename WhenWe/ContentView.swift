@@ -16,10 +16,19 @@ struct ContentView: View {
         
         if hasCompletedOnboarding {
             HomeTabView()
+                .task {
+                    do {
+                        let repo = SupportRepositoryImplementation(service: SupportService())
+                        let articles = try await repo.searchArticles(query: nil)
+                        print("Got \(articles.count) articles:", articles)
+                    } catch {
+                        print("Failed:", error)
+                    }
+                }
+            
         } else {
             OnboardingFlowView(onComplete: { hasCompletedOnboarding = true })
         }
-         
         //HomeTabView()
         
         //LoginView()
