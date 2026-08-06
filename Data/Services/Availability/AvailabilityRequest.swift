@@ -8,14 +8,20 @@
 import Foundation
 
 enum AvailabilityRequest: APIRequest {
+    
+    
+    case getMyAvailability
+    case updateMyAvailability(UpdateAvailabilityRequestDTO)
+    case getOverlap(groupId: String)
+    
     var path: String {
         switch self {
         case .getMyAvailability:
-            "/users/me/availability"
+            return "/users/me/availability"
         case .updateMyAvailability:
-            "/users/me/availability"
+            return "/users/me/availability"
         case .getOverlap(let groupId):
-            "/groups/\(groupId)/overlap"
+            return "/groups/\(groupId)/overlap"
         }
     }
     
@@ -44,8 +50,4 @@ enum AvailabilityRequest: APIRequest {
     var queryItems: [URLQueryItem]? {
         nil
     }
-    
-    case getMyAvailability
-    case updateMyAvailability(UpdateAvailabilityRequestDTO)
-    case getOverlap(groupId: String)
 }

@@ -8,8 +8,6 @@
 
 final class AvailabilityService {
     
-    static let shared = AvailabilityService()
-    
     //MARK: - Get Availability
     func getMyAvailability() async throws -> AvailabilityEntryResponseDTO {
         return try await NetworkManager.shared.request(apiRequest: AvailabilityRequest.getMyAvailability,
@@ -17,8 +15,9 @@ final class AvailabilityService {
     }
     
     //MARK: - Update Availability
-    func updateMyAvailability(request: UpdateAvailabilityRequestDTO) async throws {
-        return try await NetworkManager.shared.requestVoid(apiRequest: AvailabilityRequest.updateMyAvailability(request))
+    func updateMyAvailability(request: UpdateAvailabilityRequestDTO) async throws  -> AvailabilityEntryResponseDTO {
+        return try await NetworkManager.shared.request(apiRequest: AvailabilityRequest.updateMyAvailability(request),
+                                                       responseType: AvailabilityEntryResponseDTO.self)
     }
     
     //MARK: - Get Overlap

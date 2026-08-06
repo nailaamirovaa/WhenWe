@@ -18,13 +18,13 @@ enum EventsRequest: APIRequest {
     
     var path: String {
         switch self {
-        case .createEvent(let groupId, let createEventRequestDTO):
+        case .createEvent(let groupId, _):
             return "/groups/\(groupId)/events"
         case .listUpcomingEvents:
             return "/events"
         case .getEvent(let eventId):
             return "/events/\(eventId)"
-        case .updateEvent(let eventId, let updateEventRequestDTO):
+        case .updateEvent(let eventId, _):
             return "/events/\(eventId)/update"
         case .cancelEvent(let eventId):
             return "/events/\(eventId)/cancel"
@@ -36,20 +36,20 @@ enum EventsRequest: APIRequest {
     var method: HTTPMethod {
         switch self {
         case .createEvent, .cancelEvent, .completeEvent:
-                .post
+                return .post
         case .listUpcomingEvents, .getEvent:
-                .get
+                return .get
         case .updateEvent:
-                .patch
+                return .patch
        
         }
     }
     
     var body: Data? {
         switch self {
-        case .createEvent(let groupId, let request):
+        case .createEvent(_, let request):
             return try? JSONEncoder().encode(request)
-        case .updateEvent(let eventId, let request):
+        case .updateEvent(_, let request):
             return try? JSONEncoder().encode(request)
         case .listUpcomingEvents, .getEvent, .cancelEvent, .completeEvent:
             return nil

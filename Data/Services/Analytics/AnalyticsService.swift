@@ -7,8 +7,6 @@
 
 public final class AnalyticsService {
     
-    static let shared = AnalyticsService()
-    
     // MARK: - Ingest Batch
     
     func ingestBatch(request: AnalyticsBatchRequestDTO) async throws -> AnalyticsBatchResponseDTO {
