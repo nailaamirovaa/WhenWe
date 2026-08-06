@@ -6,7 +6,7 @@
 //
 
 enum NetworkingHelper {
-    static let baseURL = "sonra elave edersen"
+    static let baseURL = "http://localhost:3000/api/v1"
     
     static let defaultHeaders: [String: String] = [
         "Content-Type": "application/json",
