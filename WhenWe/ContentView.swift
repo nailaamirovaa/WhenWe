@@ -10,28 +10,25 @@ import SwiftUI
 struct ContentView: View {
 
     @State private var hasCompletedOnboarding = false
+    @State private var router = AppRouter()
 
     var body: some View {
-
         
-        if hasCompletedOnboarding {
-            HomeTabView()
-                .task {
-                    do {
-                        let repo = SupportRepositoryImplementation(service: SupportService())
-                        let articles = try await repo.searchArticles(query: nil)
-                        print("Got \(articles.count) articles:", articles)
-                    } catch {
-                        print("Failed:", error)
-                    }
-                }
-            
-        } else {
-            OnboardingFlowView(onComplete: { hasCompletedOnboarding = true })
+        Group {
+            switch router.route {
+            case .launching:
+                LoginView(onSignedIn: router.signedIn)
+            case .signIn:
+                LoginView(onSignedIn: router.signedIn)
+            case .nameSetup:
+                NameSetupView()
+            case .homeTab:
+                HomeTabView()
+            case .onboarding:
+                OnboardingFlowView()
+            }
         }
-        //HomeTabView()
-        
-        //LoginView()
+        .environment(router)
     }
 }
 

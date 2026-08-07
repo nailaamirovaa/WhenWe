@@ -39,26 +39,21 @@ struct OnboardingGroupSetupView: View {
                 .padding(.top, Spacing.xxl)
                 .padding(.bottom, Spacing.sm)
 
-            LazyVGrid(columns: columns, spacing: Spacing.sm) {
+            VStack(spacing: Spacing.sm) {
 
-                ForEach(ActivityType.allCases) { type in
-
-                    SelectionCard(
-                        emoji: type.emoji,
-                        title: type.title,
-                        isSelected: viewModel.activitySelection == .preset(type)
-                    ) {
-                        viewModel.selectPreset(type)
-                    }
+                HStack(spacing: Spacing.sm) {
+                    ForEach(Array(ActivityType.allCases.prefix(3))) { card(for: $0) }
                 }
 
-                SelectionCard(
-                    emoji: "+",
-                    title: "Other",
-                    isSelected: viewModel.isAddingCustomActivity,
-                    isDashed: true
-                ) {
-                    viewModel.selectOther()
+                HStack(spacing: Spacing.sm) {
+                    ForEach(Array(ActivityType.allCases.dropFirst(3))) { card(for: $0) }
+
+                    SelectionCard(emoji: "+", title: "Other",
+                                  isSelected: viewModel.isAddingCustomActivity,
+                                  isDashed: true) {
+                        viewModel.selectOther()
+                    }
+                    .frame(maxWidth: .infinity)
                 }
             }
 
@@ -83,5 +78,16 @@ struct OnboardingGroupSetupView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(AppColors.Background.subtle)
         .animation(.easeOut(duration: 0.2), value: viewModel.isAddingCustomActivity)
+    }
+    
+    private func card(for type: ActivityType) -> some View {
+        SelectionCard(
+            emoji: type.emoji,
+            title: type.title,
+            isSelected: viewModel.activitySelection == .preset(type)
+        ) {
+            viewModel.selectPreset(type)
+        }
+        .frame(maxWidth: .infinity)
     }
 }

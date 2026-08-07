@@ -13,6 +13,7 @@ enum AppColors {
         static let primary = Color("BrandPrimary")
         static let primaryPressed = Color("BrandPrimaryPressed")
         static let soft = Color("BrandSoft")
+        static let border = Color("BrandBorder")
     }
 
     enum Accent {

@@ -33,4 +33,5 @@ enum AppIcons {
     static let google = "GoogleIcon"
     static let progress_ring = "ProgressRing"
     static let appIcon = "AppIcon"
+    static let uploadPhoto = "UploadPhoto"
 }

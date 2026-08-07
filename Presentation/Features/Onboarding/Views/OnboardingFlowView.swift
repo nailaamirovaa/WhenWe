@@ -21,7 +21,6 @@ struct OnboardingFlowView: View {
     @State private var viewModel = OnboardingViewModel()
     @State private var showWelcome = true
     @State private var step: OnboardingStep = .groupSetup
-    @State private var isEnteringPager = true
 
     var body: some View {
 
@@ -33,12 +32,11 @@ struct OnboardingFlowView: View {
                     onCreateGroup: { enterFlow() },
                     onHaveInviteLink: onHaveInviteLink
                 )
-                .transition(welcomeTransition)
+                .transition(.move(edge: .leading).combined(with: .opacity))
 
             } else {
 
-                stepsPager
-                    .transition(welcomeTransition)
+                stepsPager.transition(.move(edge: .trailing).combined(with: .opacity))
             }
         }
     }
@@ -77,13 +75,7 @@ struct OnboardingFlowView: View {
 
         HStack {
 
-            Button(action: goBack) {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundStyle(AppColors.Text.primary)
-                    .frame(width: 32, height: 32)
-            }
-            .buttonStyle(.plain)
+            BackButton(action: goBack)
 
             Spacer()
 
@@ -98,22 +90,8 @@ struct OnboardingFlowView: View {
         .padding(.top, Spacing.lg)
     }
 
-    private var welcomeTransition: AnyTransition {
-
-        isEnteringPager
-            ? .asymmetric(
-                insertion: .move(edge: .trailing).combined(with: .opacity),
-                removal: .move(edge: .leading).combined(with: .opacity)
-            )
-            : .asymmetric(
-                insertion: .move(edge: .leading).combined(with: .opacity),
-                removal: .move(edge: .trailing).combined(with: .opacity)
-            )
-    }
-
     private func enterFlow() {
 
-        isEnteringPager = true
         withAnimation(.easeInOut(duration: 0.3)) {
             showWelcome = false
             step = .groupSetup
@@ -129,7 +107,6 @@ struct OnboardingFlowView: View {
     private func goBack() {
 
         guard let previous = OnboardingStep(rawValue: step.rawValue - 1) else {
-            isEnteringPager = false
             withAnimation(.easeInOut(duration: 0.3)) {
                 showWelcome = true
             }
@@ -138,8 +115,4 @@ struct OnboardingFlowView: View {
 
         step = previous
     }
-}
-
-#Preview {
-    OnboardingFlowView()
 }
