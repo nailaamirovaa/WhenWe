@@ -67,11 +67,17 @@ struct OnboardingGroupSetupView: View {
             }
 
             Spacer(minLength: Spacing.xl)
-
-            PrimaryButton(
-                title: "Continue",
-                action: onContinue
-            )
+            
+            PrimaryButton(title: "Continue", state: viewModel.groupName.trimmingCharacters(in: .whitespaces).isEmpty ? .disabled : .normal) {
+                /*
+                Task {
+                    if await viewModel.createGroup(name: viewModel.groupName, activityType: viewModel.activitySelection?.type ?? "", activityLabel: viewModel.activitySelection?.title , emoji: viewModel.activitySelection?.emoji ?? "") != nil {
+                        onContinue()
+                    }
+                }
+                 */
+                onContinue()
+            }
         }
         .padding(.horizontal, Spacing.screenPadding)
         .padding(.bottom, Spacing.xl)

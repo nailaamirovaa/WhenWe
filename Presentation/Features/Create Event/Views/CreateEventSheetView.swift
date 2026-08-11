@@ -33,6 +33,8 @@ struct CreateEventSheetView: View {
         .presentationDragIndicator(.visible)
         .presentationCornerRadius(Radius.extraLarge)
         .presentationBackground(.white)
+        .scrollIndicators(.hidden)
+        .ignoresSafeArea()
         
     }
 

@@ -35,4 +35,5 @@ struct Event: Identifiable {
     let deletedAt: String?
     let counts: EventCounts?
     let rsvps: [Rsvp]?
+    let shareURL: String?
 }

@@ -10,12 +10,24 @@ import Observation
 
 @Observable
 final class OnboardingViewModel {
+    
+    private let groupRepository: GroupRepository
+    private let eventRepository: EventRepository
+    
+    init(groupRepository: GroupRepository = GroupRepositoryImplementation(service: GroupsService()),
+         eventRepository: EventRepository = EventRepositoryImplementation(service: EventsService()) ) {
+        self.groupRepository = groupRepository
+        self.eventRepository = eventRepository
+    }
+    
+    var isLoading = false
+    var error: Error?
 
     var groupName: String = ""
     var activitySelection: ActivitySelection? = .preset(.football)
     var customActivityName: String = ""
     var isAddingCustomActivity: Bool = false
-
+    var groupId: String = ""
     var selectedTimeOption: EventTimeOption = .nextMonday
     var eventLocation: String = ""
 
@@ -27,10 +39,6 @@ final class OnboardingViewModel {
 
     var canContinueFromFirstEvent: Bool {
         !eventLocation.trimmingCharacters(in: .whitespaces).isEmpty
-    }
-
-    var shareURL: URL {
-        URL(string: "https://\(inviteLink)") ?? URL(string: "https://whenwe.app")!
     }
 
     func selectPreset(_ type: ActivityType) {
@@ -49,5 +57,33 @@ final class OnboardingViewModel {
     func updateCustomActivityName(_ name: String) {
         customActivityName = name
         activitySelection = name.trimmingCharacters(in: .whitespaces).isEmpty ? nil : .other(name)
+    }
+    
+    func createGroup(name: String, activityType: String, activityLabel: String?, emoji: String) async -> Groups? {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            let group = try await groupRepository.createGroup(name: name, activityType: activityType, activityLabel: activityLabel, emoji: emoji)
+            groupId = group.id
+            return group
+        } catch {
+            self.error = error
+            return nil
+        }
+    }
+    
+    func createEvent(startsAt: String, locationName: String) async -> Event? {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+           let event =  try await eventRepository.createEvent(groupId: groupId, params: .init(startsAt: startsAt, timeZone: TimeZone.current.identifier, title: nil, durationMin: nil, locationName: locationName, locationAddress: nil, lat: nil, lng: nil, notes: nil, capacity: nil, minPlayers: nil, waitlistEnabled: nil))
+            inviteLink = event.shareURL ?? ""
+            return event
+        } catch {
+            self.error = error
+            return nil
+        }
     }
 }

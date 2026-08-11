@@ -82,6 +82,7 @@ extension EventDetailResponseDTO {
                      cancelledAt: cancelledAt,
                      deletedAt: deletedAt,
                      counts: try counts?.toEntity(),
-                     rsvps: try rsvps?.map { try $0.toEntity() })
+                     rsvps: try rsvps?.map { try $0.toEntity() },
+                     shareURL: shareCard?.shareUrl)
     }
 }

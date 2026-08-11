@@ -13,8 +13,6 @@ struct NameSetupView: View {
     @Environment(AppRouter.self) private var router
     @State private var viewModel = LoginViewModel()
     
-    
-    
     var body: some View {
         
         ZStack {
@@ -49,7 +47,13 @@ struct NameSetupView: View {
                                         .stroke(AppColors.Brand.border, lineWidth: 1)
                                 }
                             
-                            Text("EA")
+                            Text(
+                                viewModel.name
+                                .split(separator: " ")
+                                .compactMap { $0.first }
+                                .map { String($0) }
+                                .joined()
+                            )
                                 .font(AppFont.display)
                                 .foregroundStyle(AppColors.Brand.primary)
                         }
@@ -91,8 +95,16 @@ struct NameSetupView: View {
                 Spacer()
                 
                 PrimaryButton(title: "Start playing") {
-                    router.completedNameSetup()
+                    Task {
+                        /*
+                        if await viewModel.changeName(fullName: viewModel.name) != nil {
+                            router.completedNameSetup()
+                        }
+                         */
+                        router.completedNameSetup()
+                    }
                 }
+                .disabled(viewModel.name.trimmingCharacters(in: .whitespaces).isEmpty)
             }
             .padding(Spacing.screenPadding)
         }

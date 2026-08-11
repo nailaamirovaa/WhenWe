@@ -46,32 +46,69 @@ struct OnboardingShareView: View {
             whatsAppPreview
                 .padding(.top, Spacing.xl)
 
-            Spacer(minLength: Spacing.xl)
+            Spacer(minLength: Spacing.xxl)
+            
+            VStack(spacing: Spacing.xs) {
+                HStack {
+                    Image(systemName: "link")
+                    
+                    Text(viewModel.inviteLink)
+                        .font(AppFont.bodyStrong)
+                        .foregroundStyle(.black)
+                    
+                    Spacer()
+                    
+                    Button {
+                            copyLink()
+                    } label: {
+                        HStack {
+                            Image(systemName: "document.on.document")
+                                .resizable()
+                                .frame(width: 16, height: 16)
+                                .tint(AppColors.Brand.primary)
+                            Text("Copy")
+                                .font(AppFont.caption.bold())
+                                .foregroundStyle(AppColors.Brand.primary)
+                        }
+                        .padding(Spacing.sm)
+                        .background(AppColors.Brand.soft)
+                        .clipShape(RoundedRectangle(cornerRadius: Radius.small))
+                        .frame(height: 42)
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(Spacing.xs)
+                .background(.white)
+                .clipShape(RoundedRectangle(cornerRadius: Radius.medium))
+                .overlay {
+                    RoundedRectangle(cornerRadius: Radius.medium)
+                        .stroke(AppColors.Text.tertiary)
+                }
 
-            ShareLink(
-                item: viewModel.shareURL,
-                message: Text(shareMessage)
-            ) {
-                Text("Send to group")
-                    .font(AppFont.bodyStrong)
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 56)
-                    .background(AppColors.Brand.primary)
-                    .clipShape(RoundedRectangle(cornerRadius: Radius.large))
-            }
-            .simultaneousGesture(TapGesture().onEnded { onFinish() })
+                
+                ShareLink(
+                    item: viewModel.inviteLink,
+                    message: Text(shareMessage)
+                ) {
+                    Text("Send to group")
+                        .font(AppFont.bodyStrong)
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 56)
+                        .background(AppColors.Brand.primary)
+                        .clipShape(RoundedRectangle(cornerRadius: Radius.large))
+                }
 
-            Button {
-                copyLink()
-            } label: {
-                Text("Copy link instead")
-                    .font(AppFont.caption.bold())
-                    .foregroundStyle(AppColors.Text.secondary)
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, Spacing.md)
+                Button {
+                    onFinish()
+                } label: {
+                    Text("Done")
+                        .font(AppFont.caption.bold())
+                        .foregroundStyle(AppColors.Text.secondary)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
         }
         .padding(.horizontal, Spacing.screenPadding)
         .padding(.bottom, Spacing.xl)
@@ -141,7 +178,7 @@ struct OnboardingShareView: View {
     private func copyLink() {
 
         #if canImport(UIKit)
-        UIPasteboard.general.string = viewModel.shareURL.absoluteString
+        UIPasteboard.general.string = viewModel.inviteLink
         #endif
 
         withAnimation(.easeOut(duration: 0.2)) {

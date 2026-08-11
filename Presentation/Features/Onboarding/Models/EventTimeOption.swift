@@ -30,22 +30,25 @@ enum EventTimeOption: Equatable {
         case .custom(let date): return date.formatted(date: .abbreviated, time: .shortened)
         }
     }
-
-    var subtitle: String? {
+    
+    var date: Date {
         switch self {
-        case .nextMonday: return Self.nextWeekday(.monday).formatted(.dateTime.month(.abbreviated).day())
-        case .nextFriday: return nil
-        case .custom: return nil
+        case .nextMonday: return Self.next(.monday, hour: 20)
+        case .nextFriday: return Self.next(.friday, hour: 21)
+        case .custom(let date): return date
         }
     }
 
-    private static func nextWeekday(_ weekday: Weekday) -> Date {
+    private static func next(_ weekday: Weekday, hour: Int) -> Date {
         let calendar = Calendar.current
         let today = Date()
         let todayWeekday = calendar.component(.weekday, from: today)
+
         var delta = weekday.rawValue - todayWeekday
         if delta <= 0 { delta += 7 }
-        return calendar.date(byAdding: .day, value: delta, to: today) ?? today
+
+        let day = calendar.date(byAdding: .day, value: delta, to: today) ?? today
+        return calendar.date(bySettingHour: hour, minute: 0, second: 0, of: day) ?? day
     }
 
     private enum Weekday: Int {

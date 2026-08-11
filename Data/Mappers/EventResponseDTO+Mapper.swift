@@ -82,6 +82,7 @@ extension EventResponseDTO {
                      cancelledAt: cancelledAt,
                      deletedAt: deletedAt,
                      counts: nil,
-                     rsvps: nil)
+                     rsvps: nil,
+                     shareURL: shareCard?.shareUrl)
     }
 }

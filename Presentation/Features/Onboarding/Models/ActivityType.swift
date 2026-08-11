@@ -9,11 +9,11 @@ import Foundation
 
 enum ActivityType: String, CaseIterable, Identifiable {
 
-    case football
-    case poker
-    case boardGames
-    case badminton
-    case gaming
+    case football = "football"
+    case poker = "poker"
+    case boardGames = "board_games"
+    case badminton = "badminton"
+    case gaming = "gaming"
 
     var id: String { rawValue }
 
@@ -41,7 +41,24 @@ enum ActivityType: String, CaseIterable, Identifiable {
 enum ActivitySelection: Equatable {
     case preset(ActivityType)
     case other(String)
+    
+    var type: String {
+        switch self {
+        case .preset(let activityType):
+            return activityType.rawValue
+        case .other(_):
+            return "other"
+        }
+    }
 
+    var title: String? {
+        switch self {
+        case .preset:
+            return nil
+        case .other(let string):
+            return string
+        }
+    }
     var emoji: String {
         switch self {
         case .preset(let type): return type.emoji

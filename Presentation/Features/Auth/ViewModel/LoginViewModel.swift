@@ -10,15 +10,18 @@ import Foundation
 @Observable
 final class LoginViewModel {
 
-    private let repository: AuthRepository
+    private let authRepository: AuthRepository
+    private let userRepository: UsersRepository
 
     var isLoading = false
     var error: Error?
-    var name: String = ""
+    var name: String = "Naila Amirova"
     
-    init(repository: AuthRepository = AuthRepositoryImplementation(service: AuthService(),
-                                                                     authSession: .shared)) {
-        self.repository = repository
+    init(authRepository: AuthRepository = AuthRepositoryImplementation(service: AuthService(),
+                                                                     authSession: .shared),
+         userRepository: UsersRepository = UsersRepositoryImplementation(service: UsersService())) {
+        self.authRepository = authRepository
+        self.userRepository = userRepository
     }
 
     //MARK: - Sing In with Apple
@@ -27,7 +30,8 @@ final class LoginViewModel {
         defer { isLoading = false }
 
         do {
-            return try await repository.signInWithApple(idToken: idToken, fullName: fullName)
+            name = fullName ?? ""
+            return try await authRepository.signInWithApple(idToken: idToken, fullName: fullName)
         } catch {
             self.error = error
             return nil
@@ -40,7 +44,21 @@ final class LoginViewModel {
         defer { isLoading = false }
 
         do {
-            return try await repository.signInWithGoogle(idToken: idToken, fullName: fullName)
+            name = fullName ?? ""
+            return try await authRepository.signInWithGoogle(idToken: idToken, fullName: fullName)
+        } catch {
+            self.error = error
+            return nil
+        }
+    }
+    
+    //MARK: - Change name
+    func changeName(fullName: String) async -> User? {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            return try await userRepository.updateMe(fullName: fullName, avatarURL: nil, locale: nil, timeZone: nil)
         } catch {
             self.error = error
             return nil

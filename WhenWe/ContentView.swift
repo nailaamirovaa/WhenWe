@@ -25,8 +25,11 @@ struct ContentView: View {
             case .homeTab:
                 HomeTabView()
             case .onboarding:
-                OnboardingFlowView()
+                OnboardingFlowView(onComplete: router.completedOnboarding)
             }
+        }
+        .task {
+            await router.start()
         }
         .environment(router)
     }

@@ -39,7 +39,6 @@ struct OnboardingFirstEventView: View {
 
                 SelectableRow(
                     title: EventTimeOption.nextMonday.title,
-                    subtitle: EventTimeOption.nextMonday.subtitle,
                     isSelected: viewModel.selectedTimeOption == .nextMonday
                 ) {
                     viewModel.selectedTimeOption = .nextMonday
@@ -74,11 +73,17 @@ struct OnboardingFirstEventView: View {
             }
 
             Spacer(minLength: Spacing.xl)
-
-            PrimaryButton(
-                title: "Create event",
-                action: onContinue
-            )
+            
+            PrimaryButton(title: "Create event", state: viewModel.eventLocation.trimmingCharacters(in: .whitespaces).isEmpty ? .disabled : .normal) {
+                /*
+                Task {
+                    if await viewModel.createEvent(startsAt: ISO8601DateFormatter().string(from: viewModel.selectedTimeOption.date), locationName: viewModel.eventLocation) != nil {
+                        onContinue()
+                    }
+                }
+                */
+                onContinue()
+            }
         }
         .padding(.horizontal, Spacing.screenPadding)
         .padding(.bottom, Spacing.xl)
@@ -109,8 +114,6 @@ struct OnboardingFirstEventView: View {
     }
 
     private var customDatePicker: some View {
-
-        ScrollView {
             VStack(spacing: Spacing.lg) {
                 
                 DatePicker("Event time", selection: $customDate)
@@ -123,7 +126,7 @@ struct OnboardingFirstEventView: View {
                 }
             }
             .padding(Spacing.screenPadding)
-            .presentationDetents([.medium])
-        }
+            .presentationDetents([.fraction(0.65)])
+        
     }
 }

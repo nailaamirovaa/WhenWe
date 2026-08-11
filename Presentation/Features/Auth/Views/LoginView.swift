@@ -106,7 +106,7 @@ struct LoginView: View {
                         HStack(alignment: .center,spacing: Spacing.sm) {
                             Image(AppIcons.google)
                                 .resizable()
-                                .frame(width: 16, height: 20)
+                                .frame(width: 16, height: 25)
                             
                             Text("Continue with Google")
                                 .font(.system(size: 20, weight: .medium))
