@@ -60,6 +60,7 @@ extension GroupWithNextEventResponseDTO {
                       deletedAt: deletedAt,
                       members: nil,
                       nextEvent: try nextEvent?.toEntity(),
-                      upcomingEvents: nil)
+                      upcomingEvents: nil,
+                      memberCount: memberCount)
     }
 }

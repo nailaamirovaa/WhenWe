@@ -60,6 +60,7 @@ extension GroupResponseDTO {
                       deletedAt: deletedAt,
                       members: try memberships?.map { try $0.toEntity() },
                       nextEvent: nil,
-                      upcomingEvents: nil)
+                      upcomingEvents: nil,
+                      memberCount: nil)
     }
 }

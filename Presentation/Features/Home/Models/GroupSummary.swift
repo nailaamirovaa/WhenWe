@@ -9,18 +9,18 @@ import Foundation
 
 struct GroupSummary: Identifiable, Hashable {
 
-    let id = UUID()
+    let id: String
     let emoji: String
     let name: String
     let memberCount: Int
     let activityName: String
-    let nextEvent: NextEventSummary
+    let nextEvent: NextEventSummary?
 }
 
 struct NextEventSummary: Hashable {
 
     let title: String
-    let dayTime: String
+    let dayTime: Date?
     let going: Int
     let total: Int
     let minimumRequired: Int
@@ -36,13 +36,14 @@ extension GroupSummary {
 
     static let samples: [GroupSummary] = [
         GroupSummary(
+            id: "dfv",
             emoji: "⚽",
             name: "Monday Legends",
             memberCount: 8,
             activityName: "football",
             nextEvent: NextEventSummary(
                 title: "Monday Football",
-                dayTime: "Mon 20:00",
+                dayTime: nil,
                 going: 6,
                 total: 10,
                 minimumRequired: 6,
@@ -51,13 +52,15 @@ extension GroupSummary {
             )
         ),
         GroupSummary(
+            id: "sdfd",
             emoji: "🃏",
             name: "Poker Fridays",
             memberCount: 6,
             activityName: "poker",
             nextEvent: NextEventSummary(
                 title: "Poker night",
-                dayTime: "Fri 21:00",
+                dayTime: nil
+,
                 going: 4,
                 total: 6,
                 minimumRequired: 6,

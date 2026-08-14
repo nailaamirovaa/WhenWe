@@ -24,19 +24,19 @@ struct EventDetailView: View {
 
     init(group: GroupSummary) {
         self.group = group
-        _goingCount = State(initialValue: group.nextEvent.going)
+        _goingCount = State(initialValue: group.nextEvent?.going ?? 0)
     }
 
-    private var total: Int { group.nextEvent.total }
+    private var total: Int { group.nextEvent?.total ?? 0}
 
     private var progress: Double {
         total > 0 ? Double(goingCount) / Double(total) : 0
     }
 
     private var status: GroupEventStatus {
-        goingCount >= group.nextEvent.minimumRequired
+        goingCount >= group.nextEvent?.minimumRequired ?? 0
             ? .confirmed
-            : .needsMore(group.nextEvent.minimumRequired - goingCount)
+        : .needsMore(group.nextEvent?.minimumRequired ?? 0 - goingCount)
     }
 
     private var isConfirmed: Bool {
@@ -158,11 +158,11 @@ struct EventDetailView: View {
 
                 VStack(alignment: .leading, spacing: 2) {
 
-                    Text(group.nextEvent.title)
+                    Text(group.nextEvent?.title ?? "")
                         .font(AppFont.title2)
                         .foregroundStyle(AppColors.Text.primary)
 
-                    Text(group.nextEvent.dayTime)
+                    Text(group.nextEvent?.dayTime?.formatted(.dateTime.weekday(.wide).month().day().hour()) ?? "")
                         .font(AppFont.caption)
                         .foregroundStyle(AppColors.Text.secondary)
                 }
@@ -181,7 +181,7 @@ struct EventDetailView: View {
                     .stroke(AppColors.Border.default, lineWidth: 1)
             )
             .overlay {
-                Text("map snippet · \(group.nextEvent.location)")
+                Text("map snippet · \(group.nextEvent?.location ?? "")")
                     .font(.system(size: 11, design: .monospaced))
                     .foregroundStyle(AppColors.Text.secondary)
                     .padding(.horizontal, Spacing.xs)

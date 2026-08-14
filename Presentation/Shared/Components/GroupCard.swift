@@ -39,23 +39,29 @@ struct GroupCard: View {
 
             HStack(spacing: Spacing.sm) {
 
-                CircularProgressRing(progress: group.nextEvent.progress, color: group.nextEvent.status.ringColor)
+                CircularProgressRing(progress: group.nextEvent?.progress ?? 0, color: group.nextEvent?.status.ringColor ?? .clear)
                     .frame(width: 34, height: 34)
 
                 VStack(alignment: .leading, spacing: 2) {
 
-                    Text("\(group.nextEvent.dayTime) · \(group.nextEvent.going)/\(group.nextEvent.total) going")
-                        .font(AppFont.label)
-                        .foregroundStyle(AppColors.Text.primary)
+                    if let event = group.nextEvent {
+                        Text("\(event.dayTime?.formatted(.dateTime.weekday(.abbreviated).hour().minute()) ?? "") · \(event.going)/\(event.total) going")
+                            .font(AppFont.label)
+                            .foregroundStyle(AppColors.Text.primary)
+                    } else {
+                        Text("No upcoming event")
+                            .font(AppFont.label)
+                            .foregroundStyle(AppColors.Text.primary)
+                    }
 
-                    Text(group.nextEvent.location)
+                    Text(group.nextEvent?.location ?? "")
                         .font(AppFont.caption)
                         .foregroundStyle(AppColors.Text.secondary)
                 }
 
                 Spacer()
 
-                EventStatusBadge(status: group.nextEvent.status)
+                EventStatusBadge(status: group.nextEvent?.status ?? .needsMore(group.memberCount))
             }
             .padding(Spacing.sm)
             .background(AppColors.Background.subtle)

@@ -14,4 +14,6 @@ Claudea de ki renglerin hamisini dark ve light mode ucun versin
  dark light mode
  
  detail screende cox asagidi
+ 
+ nece dene qrup yarada biler onu duzelt start a new group butonunun acionunu yaz
  */

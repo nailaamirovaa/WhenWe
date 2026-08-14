@@ -23,6 +23,7 @@ struct GroupWithNextEventResponseDTO: Decodable {
     var updatedAt: String?
     var deletedAt: String?
     var nextEvent: EventResponseDTO?
+    var memberCount: Int?
 
     enum CodingKeys: String, CodingKey {
         case id, name, emoji
@@ -37,5 +38,6 @@ struct GroupWithNextEventResponseDTO: Decodable {
         case updatedAt = "updated_at"
         case deletedAt = "deleted_at"
         case nextEvent = "next_event"
+        case memberCount = "member_count"
     }
 }

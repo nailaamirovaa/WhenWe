@@ -25,4 +25,5 @@ struct Groups: Identifiable {
     let members: [Membership]?
     let nextEvent: Event?
     let upcomingEvents: [Event]?
+    let memberCount: Int?
 }

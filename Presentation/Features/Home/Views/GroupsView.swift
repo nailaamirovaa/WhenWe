@@ -9,6 +9,8 @@ import SwiftUI
 
 struct GroupsView: View {
 
+    @State private var viewModel = GroupsViewModel()
+    
     let groups: [GroupSummary] = GroupSummary.samples
     @Binding var isTabBarHidden: Bool
 
@@ -30,7 +32,7 @@ struct GroupsView: View {
                             .foregroundStyle(AppColors.Text.primary)
                             .padding(.bottom, Spacing.xs)
 
-                        ForEach(groups) { group in
+                        ForEach((viewModel.groups ?? []).map { $0.toSummary() }) { group in
 
                             Button {
                                 selectedGroup = group
@@ -57,6 +59,9 @@ struct GroupsView: View {
             .sheet(isPresented: $isPresentingCreateEvent) {
                 CreateEventSheetView()
             }
+            .task {
+                await viewModel.getGroups()
+            }
         }
         .onChange(of: selectedGroup) { _, newValue in
             isTabBarHidden = newValue != nil
@@ -64,26 +69,30 @@ struct GroupsView: View {
     }
 
     private var startAnotherGroupCard: some View {
+        
+        Button {
+            // create group
+        } label: {
+            HStack(spacing: Spacing.xs) {
 
-        HStack(spacing: Spacing.xs) {
+                Text("Start another group")
+                    .font(AppFont.bodyStrong)
+                    .foregroundStyle(AppColors.Text.secondary)
 
-            Text("Start another group")
-                .font(AppFont.bodyStrong)
-                .foregroundStyle(AppColors.Text.secondary)
-
-            Text("PRO")
-                .font(AppFont.label)
-                .foregroundStyle(AppColors.Brand.primary)
-                .padding(.horizontal, Spacing.xs)
-                .frame(height: 20)
-                .background(AppColors.Brand.soft)
-                .clipShape(Capsule())
+                Text("PRO")
+                    .font(AppFont.label)
+                    .foregroundStyle(AppColors.Brand.primary)
+                    .padding(.horizontal, Spacing.xs)
+                    .frame(height: 20)
+                    .background(AppColors.Brand.soft)
+                    .clipShape(Capsule())
+            }
+            .frame(maxWidth: .infinity)
+            .padding(Spacing.md)
+            .overlay(
+                RoundedRectangle(cornerRadius: Radius.large)
+                    .strokeBorder(AppColors.Text.tertiary, style: StrokeStyle(lineWidth: 1.5, dash: [5]))
+            )
         }
-        .frame(maxWidth: .infinity)
-        .padding(Spacing.md)
-        .overlay(
-            RoundedRectangle(cornerRadius: Radius.large)
-                .strokeBorder(AppColors.Text.tertiary, style: StrokeStyle(lineWidth: 1.5, dash: [5]))
-        )
     }
 }
