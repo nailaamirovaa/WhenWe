@@ -9,35 +9,32 @@ import SwiftUI
 
 struct EventDetailView: View {
 
+    @Bindable var viewModel: EventDetailViewModel
+
     let group: GroupSummary
 
     @Environment(\.dismiss) private var dismiss
 
-    @State private var myRSVP: RSVPChoice? = .going
-    @State private var goingCount: Int
-    @State private var maybeCount = 2
-    @State private var cantCount = 1
     @State private var isShowingStats = false
     @State private var isShowingPayments = false
 
     private let payments = EventPayments.sample
 
-    init(group: GroupSummary) {
+    private let avatarPalette: [Color] = [AppColors.Brand.primary, .orange, AppColors.Semantic.going, .blue, .pink]
+
+    init(group: GroupSummary, event: Event) {
         self.group = group
-        _goingCount = State(initialValue: group.nextEvent?.going ?? 0)
+        self.viewModel = EventDetailViewModel(event: event)
     }
 
-    private var total: Int { group.nextEvent?.total ?? 0}
+    private var total: Int { viewModel.event.capacity ?? 0 }
 
     private var progress: Double {
-        total > 0 ? Double(goingCount) / Double(total) : 0
+        let going = viewModel.event.counts?.going ?? 0
+        return total > 0 ? Double(going) / Double(total) : 0
     }
 
-    private var status: GroupEventStatus {
-        goingCount >= group.nextEvent?.minimumRequired ?? 0
-            ? .confirmed
-        : .needsMore(group.nextEvent?.minimumRequired ?? 0 - goingCount)
-    }
+    private var status: GroupEventStatus { viewModel.event.groupEventStatus }
 
     private var isConfirmed: Bool {
         if case .confirmed = status { return true }
@@ -65,13 +62,13 @@ struct EventDetailView: View {
                         .foregroundStyle(AppColors.Text.tertiary)
                         .padding(.top, Spacing.sm)
 
-                    RSVPChipGroup(onSelect: selectRSVP, selection: myRSVP ?? .going)
+                    RSVPChipGroup(onSelect: selectRSVP, selection: viewModel.myRSVP ?? .going)
 
                     attendeeList
                 }
                 .padding(Spacing.screenPadding)
                 .padding(.bottom, Spacing.xxxl)
-                
+
                 Spacer(minLength: 50)
             }
 
@@ -100,6 +97,10 @@ struct EventDetailView: View {
         }
         .navigationDestination(isPresented: $isShowingPayments) {
             PaymentsView()
+        }
+        .task {
+            await viewModel.loadCurrentUser()
+            await viewModel.refresh()
         }
     }
 
@@ -158,11 +159,11 @@ struct EventDetailView: View {
 
                 VStack(alignment: .leading, spacing: 2) {
 
-                    Text(group.nextEvent?.title ?? "")
+                    Text(viewModel.event.title ?? "")
                         .font(AppFont.title2)
                         .foregroundStyle(AppColors.Text.primary)
 
-                    Text(group.nextEvent?.dayTime?.formatted(.dateTime.weekday(.wide).month().day().hour()) ?? "")
+                    Text(viewModel.event.startsAtDate?.formatted(.dateTime.weekday(.wide).month().day().hour().minute()) ?? "")
                         .font(AppFont.caption)
                         .foregroundStyle(AppColors.Text.secondary)
                 }
@@ -181,7 +182,7 @@ struct EventDetailView: View {
                     .stroke(AppColors.Border.default, lineWidth: 1)
             )
             .overlay {
-                Text("map snippet · \(group.nextEvent?.location ?? "")")
+                Text("map snippet · \(viewModel.event.locationName ?? "")")
                     .font(.system(size: 11, design: .monospaced))
                     .foregroundStyle(AppColors.Text.secondary)
                     .padding(.horizontal, Spacing.xs)
@@ -200,7 +201,7 @@ struct EventDetailView: View {
 
             VStack(alignment: .leading, spacing: Spacing.xxs) {
 
-                Text("\(goingCount)/\(total) going")
+                Text("\(viewModel.event.counts?.going ?? 0)/\(total) going")
                     .font(.system(size: 22, weight: .heavy))
                     .monospacedDigit()
                     .foregroundStyle(AppColors.Text.primary)
@@ -280,34 +281,42 @@ struct EventDetailView: View {
         .clipShape(RoundedRectangle(cornerRadius: Radius.large))
     }
 
+    private func rsvps(for response: String) -> [Rsvp] {
+        viewModel.event.rsvps?.filter { $0.response == response } ?? []
+    }
+
+    private var goingNames: [String] { rsvps(for: "going").compactMap { $0.membershipDisplayName } }
+    private var maybeNames: [String] { rsvps(for: "maybe").compactMap { $0.membershipDisplayName } }
+    private var cantNames: [String] { rsvps(for: "not_going").compactMap { $0.membershipDisplayName } }
+
     private var attendeeList: some View {
 
         VStack(alignment: .leading, spacing: Spacing.md) {
 
             attendeeSection(
                 dotColor: AppColors.Semantic.going,
-                label: "GOING · \(goingCount)",
-                names: "Emin, Tural, Nihad +4",
+                label: "GOING · \(viewModel.event.counts?.going ?? 0)",
+                names: goingNames,
                 showAvatars: true
             )
 
             attendeeSection(
                 dotColor: AppColors.Semantic.maybe,
-                label: "MAYBE · \(maybeCount)",
-                names: "Kamran, Orxan",
+                label: "MAYBE · \(viewModel.event.counts?.maybe ?? 0)",
+                names: maybeNames,
                 showAvatars: false
             )
 
             attendeeSection(
                 dotColor: AppColors.Semantic.notGoing,
-                label: "CAN'T · \(cantCount)",
-                names: "Farid",
+                label: "CAN'T · \(viewModel.event.counts?.notGoing ?? 0)",
+                names: cantNames,
                 showAvatars: false
             )
         }
     }
 
-    private func attendeeSection(dotColor: Color, label: String, names: String, showAvatars: Bool) -> some View {
+    private func attendeeSection(dotColor: Color, label: String, names: [String], showAvatars: Bool) -> some View {
 
         VStack(alignment: .leading, spacing: Spacing.xs) {
 
@@ -319,30 +328,40 @@ struct EventDetailView: View {
                     .foregroundStyle(AppColors.Text.secondary)
             }
 
-            if showAvatars {
+            if showAvatars && !names.isEmpty {
+
+                let shown = Array(names.prefix(5))
+                let overflow = names.count - shown.count
 
                 HStack(spacing: Spacing.sm) {
 
                     HStack(spacing: -8) {
-                        avatarBubble("EA", AppColors.Brand.primary)
-                        avatarBubble("TQ", .orange)
-                        avatarBubble("NM", AppColors.Semantic.going)
-                        avatarBubble("AH", .blue)
-                        avatarBubble("+3", .pink)
+                        ForEach(Array(shown.enumerated()), id: \.offset) { index, name in
+                            avatarBubble(initials(from: name), avatarPalette[index % avatarPalette.count])
+                        }
+                        if overflow > 0 {
+                            avatarBubble("+\(overflow)", .pink)
+                        }
                     }
 
-                    Text(names)
+                    Text(names.joined(separator: ", "))
                         .font(AppFont.caption)
                         .foregroundStyle(AppColors.Text.secondary)
                 }
 
             } else {
 
-                Text(names)
+                Text(names.isEmpty ? "No one yet" : names.joined(separator: ", "))
                     .font(AppFont.caption)
                     .foregroundStyle(AppColors.Text.secondary)
             }
         }
+    }
+
+    private func initials(from name: String) -> String {
+        let parts = name.split(separator: " ")
+        let letters = parts.prefix(2).compactMap { $0.first }
+        return String(letters).uppercased()
     }
 
     private func avatarBubble(_ initials: String, _ color: Color) -> some View {
@@ -361,25 +380,8 @@ struct EventDetailView: View {
     }
 
     private func selectRSVP(_ choice: RSVPChoice) {
-
-        guard choice != myRSVP else { return }
-
-        if let previous = myRSVP {
-            adjust(previous, by: -1)
-        }
-        adjust(choice, by: 1)
-
-        withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
-            myRSVP = choice
-        }
-    }
-
-    private func adjust(_ choice: RSVPChoice, by delta: Int) {
-        switch choice {
-        case .going: goingCount = max(0, goingCount + delta)
-        case .maybe: maybeCount = max(0, maybeCount + delta)
-        case .cant: cantCount = max(0, cantCount + delta)
+        Task {
+            await viewModel.submitRSVP(choice)
         }
     }
 }
-

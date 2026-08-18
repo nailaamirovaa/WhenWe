@@ -11,14 +11,16 @@ struct CreateEventWhenStepView: View {
 
     @Bindable var viewModel: CreateEventViewModel
     let onNext: () -> Void
-
+    let groups: [Groups]
+    @State private var isGroupPickerExpanded = false
+    
     var body: some View {
         
-        ScrollView{
+        ZStack {
             
             VStack(alignment: .leading, spacing: Spacing.md) {
                 
-                HStack(alignment: .firstTextBaseline) {
+                HStack(alignment: .center) {
                     
                     Text("What are we playing?")
                         .font(AppFont.title2)
@@ -29,7 +31,17 @@ struct CreateEventWhenStepView: View {
                     Text("1/2")
                         .font(AppFont.caption.bold())
                         .foregroundStyle(AppColors.Text.tertiary)
+                    
+                    Image(systemName: "xmark.circle.fill")
+                        .resizable()
+                        .frame(width: 36, height: 36)
+                        .foregroundStyle(AppColors.Background.subtle)
+                        .background(AppColors.Text.tertiary)
+                        .clipShape(Circle())
                 }
+                
+                GroupPickerView(groups: groups, isExpanded: $isGroupPickerExpanded, onSelect: { viewModel.selectedGroup = $0 })
+                    .zIndex(isGroupPickerExpanded ? 1 : 0)
                 
                 activityPicker
                 
@@ -78,6 +90,7 @@ struct CreateEventWhenStepView: View {
                 PrimaryButton(title: "Next", action: onNext)
             }
             .padding(.top, Spacing.xxl)
+            .padding(.horizontal, Spacing.screenPadding)
         }
         .presentationDragIndicator(.hidden)
     }
@@ -127,4 +140,10 @@ struct CreateEventWhenStepView: View {
             )
         }
     }
+}
+
+#Preview {
+    CreateEventWhenStepView(viewModel: CreateEventViewModel(), onNext: {
+        print("dfv")
+    }, groups: Groups.mockList)
 }

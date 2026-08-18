@@ -18,4 +18,6 @@ struct Rsvp: Identifiable {
     let guestCount: Int
     let createdAt: String
     let updatedAt: String
+    let membershipUserId: String?
+    let membershipDisplayName: String?
 }

@@ -28,4 +28,21 @@ enum RSVPChoice: CaseIterable {
         case .cant: return AppColors.Semantic.notGoing
         }
     }
+
+    var backendValue: String {
+        switch self {
+        case .going: return "going"
+        case .maybe: return "maybe"
+        case .cant: return "not_going"
+        }
+    }
+
+    init?(backendValue: String) {
+        switch backendValue {
+        case "going": self = .going
+        case "maybe": self = .maybe
+        case "not_going": self = .cant
+        default: return nil
+        }
+    }
 }

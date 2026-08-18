@@ -41,6 +41,13 @@ struct CreateEventOptionsStepView: View {
                     .font(AppFont.caption.bold())
                     .foregroundStyle(AppColors.Text.tertiary)
                     .monospacedDigit()
+                
+                Image(systemName: "xmark.circle.fill")
+                    .resizable()
+                    .frame(width: 36, height: 36)
+                    .foregroundStyle(AppColors.Background.subtle)
+                    .background(AppColors.Text.tertiary)
+                    .clipShape(Circle())
             }
             .padding(.bottom, Spacing.xs)
 
@@ -103,9 +110,18 @@ struct CreateEventOptionsStepView: View {
             recurringCard
                 .padding(.top, Spacing.xs)
 
-            PrimaryButton(title: "Create event", action: onCreate)
+            PrimaryButton(title: "Create event", action: {
+                Task {
+                    if await viewModel.createEvent() != nil {
+                        onCreate()
+                    }
+                }
+            })
                 .padding(.top, Spacing.md)
+            
+            Spacer()
         }
+        .padding(.top, Spacing.xxl)
         .sheet(isPresented: $isShowingRecurringSetup) {
             RecurringSetupView()
         }
@@ -236,4 +252,8 @@ struct CreateEventOptionsStepView: View {
         }
         .buttonStyle(.plain)
     }
+}
+
+#Preview {
+    CreateEventOptionsStepView(viewModel: CreateEventViewModel(), onBack: { print("dfvdf") }, onCreate: { print("dfvdf") })
 }

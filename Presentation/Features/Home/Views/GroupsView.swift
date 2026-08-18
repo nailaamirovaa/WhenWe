@@ -14,7 +14,7 @@ struct GroupsView: View {
     let groups: [GroupSummary] = GroupSummary.samples
     @Binding var isTabBarHidden: Bool
 
-    @State private var selectedGroup: GroupSummary?
+    @State private var selectedGroup: Groups?
     @State private var isPresentingCreateEvent = false
 
     var body: some View {
@@ -32,12 +32,12 @@ struct GroupsView: View {
                             .foregroundStyle(AppColors.Text.primary)
                             .padding(.bottom, Spacing.xs)
 
-                        ForEach((viewModel.groups ?? []).map { $0.toSummary() }) { group in
+                        ForEach(viewModel.groups ?? []) { group in
 
                             Button {
                                 selectedGroup = group
                             } label: {
-                                GroupCard(group: group)
+                                GroupCard(group: group.toSummary())
                             }
                             .buttonStyle(.plain)
                         }
@@ -54,10 +54,12 @@ struct GroupsView: View {
             }
             .background(AppColors.Background.subtle)
             .navigationDestination(item: $selectedGroup) { group in
-                EventDetailView(group: group)
+                if let event = group.nextEvent {
+                    EventDetailView(group: group.toSummary(), event: event)
+                }
             }
-            .sheet(isPresented: $isPresentingCreateEvent) {
-                CreateEventSheetView()
+            .fullScreenCover(isPresented: $isPresentingCreateEvent) {
+                CreateEventSheetView(groups: Groups.mockList)
             }
             .task {
                 await viewModel.getGroups()

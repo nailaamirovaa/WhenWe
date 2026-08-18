@@ -13,24 +13,26 @@ struct CreateEventSheetView: View {
     @State private var viewModel = CreateEventViewModel()
     @State private var step = 1
     @State private var isMovingForward = true
+    
+    var groups: [Groups]
 
     var body: some View {
 
         Group {
 
             if step == 1 {
-                CreateEventWhenStepView(viewModel: viewModel, onNext: goToOptions)
+                CreateEventWhenStepView(viewModel: viewModel, onNext: goToOptions, groups: groups)
                     .transition(transition)
             } else {
                 CreateEventOptionsStepView(viewModel: viewModel, onBack: goToWhen, onCreate: { dismiss() })
                     .transition(transition)
+                    .padding(.horizontal, Spacing.screenPadding)
             }
         }
-        .padding(.horizontal, Spacing.screenPadding)
-        .padding(.top, Spacing.sm)
         .padding(.bottom, Spacing.sm)
-        .presentationDetents([.height(step == 1 ? 700 : 620)])
-        .presentationDragIndicator(.visible)
+        .padding(.top, Spacing.xxl)
+        .presentationDetents([.large])
+        .presentationDragIndicator(.hidden)
         .presentationCornerRadius(Radius.extraLarge)
         .presentationBackground(.white)
         .scrollIndicators(.hidden)
@@ -63,4 +65,12 @@ struct CreateEventSheetView: View {
             step = 1
         }
     }
+}
+
+#Preview {
+    CreateEventSheetView(groups: [
+        Groups.mockBookClub,
+        Groups.mockHiking,
+        Groups.mockChess
+    ])
 }

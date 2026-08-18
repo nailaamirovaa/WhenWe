@@ -18,9 +18,10 @@ struct RsvpResponseDTO: Decodable {
     var guestCount: Int?
     var createdAt: String?
     var updatedAt: String?
+    var membership: MembershipResponseDTO?
 
     enum CodingKeys: String, CodingKey {
-        case id, response, source
+        case id, response, source, membership
         case eventId = "event_id"
         case membershipId = "membership_id"
         case respondedAt = "responded_at"

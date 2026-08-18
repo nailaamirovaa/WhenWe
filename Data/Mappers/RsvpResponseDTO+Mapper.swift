@@ -53,6 +53,8 @@ extension RsvpResponseDTO {
                     source: source,
                     guestCount: guestCount,
                     createdAt: createdAt,
-                    updatedAt: updatedAt)
+                    updatedAt: updatedAt,
+                    membershipUserId: membership?.userId,
+                    membershipDisplayName: membership?.displayName)
     }
 }
