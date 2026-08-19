@@ -11,4 +11,5 @@ struct UserCounts {
 
     let ownedGroups: Int
     let eventsGoing: Int
+    let showUpRate: Int?
 }

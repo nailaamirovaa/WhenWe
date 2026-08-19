@@ -42,4 +42,10 @@ final class EventsService {
         return try await NetworkManager.shared.request(apiRequest: EventsRequest.completeEvent(eventId: eventId),
                                                        responseType: EventResponseDTO.self)
     }
+
+    //MARK: - Get Pending Attendance
+    func getPendingAttendance() async throws -> [PendingAttendanceResponseDTO] {
+        return try await NetworkManager.shared.request(apiRequest: EventsRequest.getPendingAttendance,
+                                                       responseType: [PendingAttendanceResponseDTO].self)
+    }
 }

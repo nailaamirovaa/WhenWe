@@ -11,9 +11,11 @@ struct UserCountsResponseDTO: Decodable {
 
     var ownedGroups: Int?
     var eventsGoing: Int?
+    var showUpRate: Int?
 
     enum CodingKeys: String, CodingKey {
         case ownedGroups = "owned_groups"
         case eventsGoing = "events_going"
+        case showUpRate = "show_up_rate"
     }
 }

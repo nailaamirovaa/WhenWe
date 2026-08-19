@@ -18,4 +18,10 @@ final class RSVPRepositoryImplementation: RSVPRepository {
         let dto = try await service.submitRSVP(eventId: eventId, request: RsvpRequestDTO(response: response, guestCount: guestCount))
         return try dto.toEntity()
     }
+
+    //MARK: - Mark Attendance
+    func markAttendance(eventId: String, attended: Bool) async throws -> Rsvp {
+        let dto = try await service.markAttendance(eventId: eventId, request: MarkAttendanceRequestDTO(attended: attended))
+        return try dto.toEntity()
+    }
 }

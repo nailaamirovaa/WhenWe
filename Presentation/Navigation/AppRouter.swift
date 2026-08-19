@@ -13,12 +13,17 @@ final class AppRouter {
     
     private var usersRepository: UsersRepository
     private var authSession: AuthSessionManager
-    
+    private var eventRepository: EventRepository
+
     var route: Route = .signIn
-    
-    init(usersRepository: UsersRepository = UsersRepositoryImplementation(service: UsersService()), authSession: AuthSessionManager = .shared) {
+    var pendingAttendanceEvents: [PendingAttendanceEvent] = []
+
+    init(usersRepository: UsersRepository = UsersRepositoryImplementation(service: UsersService()),
+         authSession: AuthSessionManager = .shared,
+         eventRepository: EventRepository = EventRepositoryImplementation(service: EventsService())) {
         self.usersRepository = usersRepository
         self.authSession = authSession
+        self.eventRepository = eventRepository
     }
     
     //MARK: - Start App
@@ -61,9 +66,17 @@ final class AppRouter {
         do {
             let user = try await usersRepository.getMe()
             route = (user.counts?.ownedGroups ?? 0) > 0 ? .homeTab : .onboarding
+            if route == .homeTab {
+                await loadPendingAttendance()
+            }
         } catch {
             authSession.clear()
             route = .signIn
         }
+    }
+
+    //MARK: - Pending Attendance
+    private func loadPendingAttendance() async {
+        pendingAttendanceEvents = (try? await eventRepository.getPendingAttendance()) ?? []
     }
 }

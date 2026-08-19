@@ -18,6 +18,7 @@ extension UserCountsResponseDTO {
         }
 
         return UserCounts(ownedGroups: ownedGroups,
-                          eventsGoing: eventsGoing)
+                          eventsGoing: eventsGoing,
+                          showUpRate: showUpRate)
     }
 }

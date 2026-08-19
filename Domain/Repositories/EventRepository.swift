@@ -12,4 +12,5 @@ protocol EventRepository {
     func updateEvent(eventId: String,params: EventParams) async throws -> Event
     func cancelEvent(eventId: String) async throws -> Event
     func completeEvent(eventId: String) async throws -> Event
+    func getPendingAttendance() async throws -> [PendingAttendanceEvent]
 }

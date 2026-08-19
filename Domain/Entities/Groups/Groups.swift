@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Groups: Identifiable {
+struct Groups: Identifiable, Hashable {
 
     let id: String
     let name: String
@@ -26,6 +26,14 @@ struct Groups: Identifiable {
     let nextEvent: Event?
     let upcomingEvents: [Event]?
     let memberCount: Int?
+
+    static func == (lhs: Groups, rhs: Groups) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
 extension Groups {

@@ -82,7 +82,13 @@ final class EventRepositoryImplementation: EventRepository {
     //MARK: - Complete Event
     func completeEvent(eventId: String) async throws -> Event {
         let dto = try await service.completeEvent(eventId: eventId)
-        
+
         return try dto.toEntity()
+    }
+
+    //MARK: - Get Pending Attendance
+    func getPendingAttendance() async throws -> [PendingAttendanceEvent] {
+        let dtos = try await service.getPendingAttendance()
+        return try dtos.map { try $0.toEntity() }
     }
 }

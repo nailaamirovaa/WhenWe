@@ -9,12 +9,36 @@ import SwiftUI
 
 struct ProfileView: View {
     
+    @Bindable var viewModel: ProfileViewModel
     @EnvironmentObject private var themeManager: ThemeManager
+    @Environment(AppRouter.self) private var router
     @State private var isPremium = false
 
-    private let name = "Emin Aliyev"
-    private let initials = "EA"
-    private let maskedPhone = "+994 50 • • • 12"
+    private var name: String {
+        viewModel.user?.fullName ?? "Your name"
+    }
+
+    private var initials: String {
+        guard let fullName = viewModel.user?.fullName, !fullName.isEmpty else { return "?" }
+        let parts = fullName.split(separator: " ")
+        let letters = parts.prefix(2).compactMap { $0.first }
+        return String(letters).uppercased()
+    }
+
+    private var showUpRateLabel: String {
+        guard let rate = viewModel.user?.counts?.showUpRate else { return "—" }
+        return "\(rate)%"
+    }
+
+    private var signInMethodLabel: String {
+        if viewModel.user?.appleUserId != nil {
+            return "Signed in with Apple"
+        } else if viewModel.user?.googleUserId != nil {
+            return "Signed in with Google"
+        } else {
+            return ""
+        }
+    }
 
     var body: some View {
 
@@ -35,13 +59,18 @@ struct ProfileView: View {
                 ProfilePlanCard(isPremium: isPremium, action: {})
 
                 HStack(spacing: Spacing.sm) {
-                    StatTile(value: "48", label: "games played")
-                    StatTile(value: "91%", label: "show-up rate")
+                    StatTile(value: "\(viewModel.user?.counts?.eventsGoing ?? 0)", label: "games played")
+                    StatTile(value: showUpRateLabel, label: "show-up rate")
                 }
 
                 settingsList
 
-                Button("Sign out") {}
+                Button("Sign out") {
+                    Task {
+                        await viewModel.logout()
+                        router.loggedOut()
+                    }
+                }
                     .font(AppFont.bodyStrong)
                     .foregroundStyle(AppColors.Semantic.notGoing)
                     .padding(.top, Spacing.xs)
@@ -49,6 +78,7 @@ struct ProfileView: View {
             .padding(Spacing.screenPadding)
         }
         .background(AppColors.Background.subtle)
+        .task { await viewModel.getMe() }
     }
 
     private var titleRow: some View {
@@ -119,7 +149,7 @@ struct ProfileView: View {
                     }
                 }
 
-                Text(maskedPhone)
+                Text(signInMethodLabel)
                     .font(AppFont.caption)
                     .foregroundStyle(AppColors.Text.secondary)
             }

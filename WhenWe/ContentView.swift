@@ -31,6 +31,17 @@ struct ContentView: View {
         .task {
             await router.start()
         }
+        .fullScreenCover(isPresented: Binding(
+            get: { !router.pendingAttendanceEvents.isEmpty },
+            set: { isPresented in
+                if !isPresented { router.pendingAttendanceEvents = [] }
+            }
+        )) {
+            AttendanceCheckView(
+                viewModel: AttendanceCheckViewModel(events: router.pendingAttendanceEvents),
+                onFinished: { router.pendingAttendanceEvents = [] }
+            )
+        }
         .environment(router)
     }
 }

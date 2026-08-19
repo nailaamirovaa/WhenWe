@@ -55,6 +55,7 @@ extension RsvpResponseDTO {
                     createdAt: createdAt,
                     updatedAt: updatedAt,
                     membershipUserId: membership?.userId,
-                    membershipDisplayName: membership?.displayName)
+                    membershipDisplayName: membership?.displayName,
+                    attended: attended)
     }
 }

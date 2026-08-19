@@ -34,7 +34,7 @@ struct HomeTabView: View {
         case .upcoming:
             UpcomingView()
         case .profile:
-            ProfileView()
+            ProfileView(viewModel: ProfileViewModel())
         }
     }
 }

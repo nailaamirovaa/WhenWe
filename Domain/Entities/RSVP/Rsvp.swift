@@ -20,4 +20,5 @@ struct Rsvp: Identifiable {
     let updatedAt: String
     let membershipUserId: String?
     let membershipDisplayName: String?
+    let attended: Bool?
 }

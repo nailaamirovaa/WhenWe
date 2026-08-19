@@ -15,7 +15,8 @@ enum EventsRequest: APIRequest {
     case updateEvent(eventId: String, UpdateEventRequestDTO)
     case cancelEvent(eventId: String)
     case completeEvent(eventId: String)
-    
+    case getPendingAttendance
+
     var path: String {
         switch self {
         case .createEvent(let groupId, _):
@@ -30,28 +31,30 @@ enum EventsRequest: APIRequest {
             return "/events/\(eventId)/cancel"
         case .completeEvent(let eventId):
             return "/events/\(eventId)/complete"
+        case .getPendingAttendance:
+            return "/events/pending-attendance"
         }
     }
-    
+
     var method: HTTPMethod {
         switch self {
         case .createEvent, .cancelEvent, .completeEvent:
                 return .post
-        case .listUpcomingEvents, .getEvent:
+        case .listUpcomingEvents, .getEvent, .getPendingAttendance:
                 return .get
         case .updateEvent:
                 return .patch
-       
+
         }
     }
-    
+
     var body: Data? {
         switch self {
         case .createEvent(_, let request):
             return try? JSONEncoder().encode(request)
         case .updateEvent(_, let request):
             return try? JSONEncoder().encode(request)
-        case .listUpcomingEvents, .getEvent, .cancelEvent, .completeEvent:
+        case .listUpcomingEvents, .getEvent, .cancelEvent, .completeEvent, .getPendingAttendance:
             return nil
         }
     }
