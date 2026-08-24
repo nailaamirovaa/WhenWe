@@ -12,6 +12,7 @@ struct NotificationPreferencesInput {
     var gameConfirmed: Bool?
     var dayBeforeNudge: Bool?
     var weeklyRecurringAsk: Bool?
+    var attendanceCheck: Bool?
     var quietStart: String?
     var quietEnd: String?
 }

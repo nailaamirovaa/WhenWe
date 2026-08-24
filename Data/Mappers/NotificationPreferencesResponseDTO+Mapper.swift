@@ -37,6 +37,10 @@ extension NotificationPreferencesResponseDTO {
             throw MappingError.missingField("weeklyRecurringAsk")
         }
 
+        guard let attendanceCheck = attendanceCheck else {
+            throw MappingError.missingField("attendanceCheck")
+        }
+
         guard let quietStart = quietStart else {
             throw MappingError.missingField("quietStart")
         }
@@ -60,6 +64,7 @@ extension NotificationPreferencesResponseDTO {
                                        gameConfirmed: gameConfirmed,
                                        dayBeforeNudge: dayBeforeNudge,
                                        weeklyRecurringAsk: weeklyRecurringAsk,
+                                       attendanceCheck: attendanceCheck,
                                        quietStart: quietStart,
                                        quietEnd: quietEnd,
                                        createdAt: createdAt,

@@ -41,6 +41,7 @@ final class NotificationRepositoryImplementation: NotificationsRepository {
                                                                                                        gameConfirmed: input.gameConfirmed,
                                                                                                        dayBeforeNudge: input.dayBeforeNudge,
                                                                                                        weeklyRecurringAsk: input.weeklyRecurringAsk,
+                                                                                                       attendanceCheck: input.attendanceCheck,
                                                                                                        quietStart: input.quietStart,
                                                                                                        quietEnd:  input.quietEnd))
         

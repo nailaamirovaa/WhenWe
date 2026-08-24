@@ -40,3 +40,7 @@ struct UpcomingView: View {
         .background(AppColors.Background.subtle)
     }
 }
+
+#Preview {
+    UpcomingView()
+}

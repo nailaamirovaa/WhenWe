@@ -16,6 +16,7 @@ struct NotificationPreferences: Identifiable {
     let gameConfirmed: Bool
     let dayBeforeNudge: Bool
     let weeklyRecurringAsk: Bool
+    let attendanceCheck: Bool
     let quietStart: String
     let quietEnd: String
     let createdAt: String

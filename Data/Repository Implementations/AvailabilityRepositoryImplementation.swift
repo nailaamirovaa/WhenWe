@@ -15,22 +15,22 @@ final class AvailabilityRepositoryImplementation: AvailabilityRepository {
     
     //MARK: - Get My Availability
     func getMyAvailability() async throws -> [AvailabilityEntry] {
-        let dto = try await service.getMyAvailability()
-        
-        return try [dto.toEntity()]
+        let dtos = try await service.getMyAvailability()
+
+        return try dtos.map { try $0.toEntity() }
     }
-    
+
     //MARK: - Update My Availability
     func updateMyAvailability(entries: [AvailabilityEntryRequestDTO]) async throws -> [AvailabilityEntry] {
-        let dto = try await service.updateMyAvailability(request: UpdateAvailabilityRequestDTO(entries: entries))
-        
-        return try [dto.toEntity()]
+        let dtos = try await service.updateMyAvailability(request: UpdateAvailabilityRequestDTO(entries: entries))
+
+        return try dtos.map { try $0.toEntity() }
     }
-    
+
     //MARK: - Get Group Overlap
     func getGroupOverlapHeatmap(groupId: String) async throws -> [OverlapCell] {
-        let dto = try await service.getGroupOverlap(groupId: groupId)
-        
-        return try [dto.toEntity()]
+        let dtos = try await service.getGroupOverlap(groupId: groupId)
+
+        return try dtos.map { try $0.toEntity() }
     }
 }

@@ -16,6 +16,7 @@ struct NotificationPreferencesResponseDTO: Decodable {
     var gameConfirmed: Bool?
     var dayBeforeNudge: Bool?
     var weeklyRecurringAsk: Bool?
+    var attendanceCheck: Bool?
     var quietStart: String?
     var quietEnd: String?
     var createdAt: String?
@@ -29,6 +30,7 @@ struct NotificationPreferencesResponseDTO: Decodable {
         case gameConfirmed = "game_confirmed"
         case dayBeforeNudge = "day_before_nudge"
         case weeklyRecurringAsk = "weekly_recurring_ask"
+        case attendanceCheck = "attendance_check"
         case quietStart = "quiet_start"
         case quietEnd = "quiet_end"
         case createdAt = "created_at"

@@ -13,6 +13,9 @@ struct ProfileView: View {
     @EnvironmentObject private var themeManager: ThemeManager
     @Environment(AppRouter.self) private var router
     @State private var isPremium = false
+    @State private var isShowingNotifications = false
+    @State private var isShowingAvailability = false
+    @State private var isShowingHelp = false
 
     private var name: String {
         viewModel.user?.fullName ?? "Your name"
@@ -42,43 +45,55 @@ struct ProfileView: View {
 
     var body: some View {
 
-        ScrollView {
+        NavigationStack {
 
-            VStack(spacing: Spacing.md) {
+            ScrollView {
 
-                Picker("Preview plan", selection: $isPremium) {
-                    Text("Free").tag(false)
-                    Text("Premium").tag(true)
-                }
-                .pickerStyle(.segmented)
+                VStack(spacing: Spacing.md) {
 
-                titleRow
-
-                userCard
-
-                ProfilePlanCard(isPremium: isPremium, action: {})
-
-                HStack(spacing: Spacing.sm) {
-                    StatTile(value: "\(viewModel.user?.counts?.eventsGoing ?? 0)", label: "games played")
-                    StatTile(value: showUpRateLabel, label: "show-up rate")
-                }
-
-                settingsList
-
-                Button("Sign out") {
-                    Task {
-                        await viewModel.logout()
-                        router.loggedOut()
+                    Picker("Preview plan", selection: $isPremium) {
+                        Text("Free").tag(false)
+                        Text("Premium").tag(true)
                     }
+                    .pickerStyle(.segmented)
+
+                    titleRow
+
+                    userCard
+
+                    ProfilePlanCard(isPremium: isPremium, action: {})
+
+                    HStack(spacing: Spacing.sm) {
+                        StatTile(value: "\(viewModel.user?.counts?.eventsGoing ?? 0)", label: "games played")
+                        StatTile(value: showUpRateLabel, label: "show-up rate")
+                    }
+
+                    settingsList
+
+                    Button("Sign out") {
+                        Task {
+                            await viewModel.logout()
+                            router.loggedOut()
+                        }
+                    }
+                        .font(AppFont.bodyStrong)
+                        .foregroundStyle(AppColors.Semantic.notGoing)
+                        .padding(.top, Spacing.xs)
                 }
-                    .font(AppFont.bodyStrong)
-                    .foregroundStyle(AppColors.Semantic.notGoing)
-                    .padding(.top, Spacing.xs)
+                .padding(Spacing.screenPadding)
             }
-            .padding(Spacing.screenPadding)
+            .background(AppColors.Background.subtle)
+            .task { await viewModel.getMe() }
+            .navigationDestination(isPresented: $isShowingNotifications) {
+                NotificationsView()
+            }
+            .navigationDestination(isPresented: $isShowingAvailability) {
+                MyAvailabilityView()
+            }
+            .navigationDestination(isPresented: $isShowingHelp) {
+                HelpAndFeedbackView()
+            }
         }
-        .background(AppColors.Background.subtle)
-        .task { await viewModel.getMe() }
     }
 
     private var titleRow: some View {
@@ -176,11 +191,11 @@ struct ProfileView: View {
 
         VStack(spacing: 0) {
 
-            SettingsRow(icon: AppIcons.reminder, title: "Notifications", action: {})
+            SettingsRow(icon: AppIcons.reminder, title: "Notifications", action: { isShowingNotifications = true })
             Divider()
-            SettingsRow(icon: AppIcons.calendar, title: "My availability", action: {})
+            SettingsRow(icon: AppIcons.calendar, title: "My availability", action: { isShowingAvailability = true })
             Divider()
-            SettingsRow(icon: AppIcons.help, title: "Help & feedback", action: {})
+            SettingsRow(icon: AppIcons.help, title: "Help & feedback", action: { isShowingHelp = true })
         }
         .background(AppColors.Background.card)
         .clipShape(RoundedRectangle(cornerRadius: Radius.large))
